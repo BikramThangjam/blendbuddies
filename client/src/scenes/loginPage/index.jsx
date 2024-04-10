@@ -1,9 +1,9 @@
 import React from 'react'
-
+import Navbar from '../navbar';
 function LoginPage() {
   return (
     <div>
-      Login page
+      <Navbar />
     </div>
   )
 }
