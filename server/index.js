@@ -14,6 +14,9 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import postRoutes from './routes/posts.js';
 import { verifyToken } from "./middleware/auth.js";
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+import {users, posts} from "./data/index.js";
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +26,7 @@ const app = express()
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
-app.use(morgan("common"));
+app.use(morgan("combined"));
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
@@ -56,5 +59,10 @@ mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(()=>{
-    app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`))
+    app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
+
+    /* Use this only one time. Sample data */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+
 }).catch(error => console.log(`Could not connect to db. Error- ${error}`))

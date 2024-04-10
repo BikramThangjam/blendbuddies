@@ -25,14 +25,21 @@ const UserSchema = new mongoose.Schema({
         min: 6,
     },
     picturePath: {
+        type: String,
+        default: ""
+    },
+
+    friends: {
         type: Array,
         default: []
     },
+
     location: String,
     occupation: String,
     viewedProfile: Number,
-    impressions: Number
+    impressions: Number,
+
 }, {timestamps: true});
 
 const User = mongoose.model("User", UserSchema);
-export default User
+export default User;
