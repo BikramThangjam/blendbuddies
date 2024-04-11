@@ -20,7 +20,6 @@ import {
   Help,
   Menu,
   Close,
-  InsightsOutlined
 } from '@mui/icons-material';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -33,7 +32,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state?.user);
-
+  const mode = useSelector(state => state.mode);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -47,30 +46,30 @@ function Navbar() {
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt} >
-      <FlexBetween gap="1.75rem">
+      <FlexBetween gap="5rem">
         <Typography
           fontWeight="bold"
           fontSize= "clamp(1rem, 2rem, 2.25rem)"
-          color="primary"
+          color= {mode === "dark"?theme.palette.light : theme.palette.primary.main}
           onClick = {() => navigate("/home")}
           sx= {{
             "&:hover": {
-              color: primaryLight,
+              color: theme.palette.primary.light,
               cursor: "pointer",
             },
           }}
         >
-          BlendBuddies
+          Connectopia
         </Typography>
         {
           isNonMobileScreens && (
             <FlexBetween 
               backgroundColor={neutralLight}
               borderRadius="9px"
-              gap="3rem"
-              padding="0.1rem 1.5rem"
+              gap="4rem"
+              padding="0.1rem 1.5rem"              
             >
-              <InputBase placeholder="Search..." />
+              <InputBase placeholder="Search..."/>
               <IconButton>
                 <Search />
               </IconButton>
