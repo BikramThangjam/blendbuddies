@@ -41,7 +41,7 @@ function LoginPage() {
                 },
               }}
             >
-              Connectopia
+              Blend Buddies
             </Typography>
             <IconButton onClick={() => dispatch(setMode())}>
               {theme.palette.mode === "dark" ? (
@@ -63,7 +63,7 @@ function LoginPage() {
           backgroundColor={theme.palette.background.alt}
         >
           <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-            Welcome to Connectopia, meet your dear ones!
+            Welcome to Blend Buddies: Your Home for Social Blending!
           </Typography>
           <Form />
         </Box>
