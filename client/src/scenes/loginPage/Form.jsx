@@ -229,9 +229,10 @@ const Form = () => {
               </>
             )}
 
-            {/** End of Register form */}
+            
 
             {/* {Login form} */}
+            
             <TextField
               label="Email"
               onBlur={handleBlur}
