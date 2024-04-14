@@ -26,7 +26,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../reducers";
 
-const MyPostWidget = ({ picturePath }) => {
+const MyPostWidget = ({ picturePath}) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -36,6 +36,7 @@ const MyPostWidget = ({ picturePath }) => {
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const medium = palette.neutral.medium;
+  const main = palette.primary.main
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -63,7 +64,7 @@ const MyPostWidget = ({ picturePath }) => {
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath} />
         <InputBase
-          placeholder="What's on your mind..."
+          placeholder= "What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{
@@ -80,7 +81,7 @@ const MyPostWidget = ({ picturePath }) => {
               onClick={handlePost}
               sx={{
                 color: "white",
-                backgroundColor: palette.primary.main,
+                backgroundColor: post ? palette.primary.main : palette.neutral.light,
                 borderRadius: "3rem",
               }}
             >
@@ -150,7 +151,7 @@ const MyPostWidget = ({ picturePath }) => {
             sx={{
               "&:hover": {
                 cursor: "pointer",
-                color: medium,
+                color: main,
               },
             }}
           >
@@ -162,15 +163,15 @@ const MyPostWidget = ({ picturePath }) => {
           <>
             <FlexBetween gap="0.25rem">
               <GifBoxOutlined sx={{ color: medium }} />
-              <Typography color={medium}>Clip</Typography>
+              <Typography color={medium} sx={{"&:hover": {cursor: "pointer",color: main}}}>Clip</Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
               <AttachFileOutlined sx={{ color: medium }} />
-              <Typography color={medium}>Attachment</Typography>
+              <Typography color={medium}  sx={{"&:hover": {cursor: "pointer",color: main}}}>Attachment</Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
               <MicOutlined sx={{ color: medium }} />
-              <Typography color={medium}>Audio</Typography>
+              <Typography color={medium}  sx={{"&:hover": {cursor: "pointer",color: main}}}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (

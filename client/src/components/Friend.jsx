@@ -4,7 +4,7 @@ import {
 } from "@mui/icons-material";
 import {Box, Icon, IconButton, Typography, useTheme} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { setFriends } from "../reducers";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
@@ -15,7 +15,10 @@ function Friend({friendId, name, subtitle, userPicturePath}) {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {_id} = useSelector(state => state.user);
+    const location = useLocation();
+    const isProfileRoute = location.pathname.includes("/profile/");
+
+    const {_id, email} = useSelector(state => state.user);
     const token = useSelector(state => state.token);
     const friends = useSelector(state => state.user.friends);
 
@@ -26,6 +29,7 @@ function Friend({friendId, name, subtitle, userPicturePath}) {
     const medium = palette.neutral.medium;
 
     const isFriend = friends.find(friend => friend._id === friendId);
+
 
     const patchFriend = async () =>  {
         const response = await fetch(`http://localhost:3001/users/${_id}/${friendId}`,
@@ -76,7 +80,7 @@ function Friend({friendId, name, subtitle, userPicturePath}) {
             </Box>
         </FlexBetween>
         {
-            _id !== friendId && (
+            _id !== friendId && !isProfileRoute && (
                 <IconButton
                     onClick={patchFriend}
                     sx={{backgroundColor: primaryLight, p: "0.6rem"}}

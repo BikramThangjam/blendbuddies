@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  Alert,
 } from "@mui/material";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -48,6 +49,7 @@ const initialValueLogin = {
 };
 
 const Form = () => {
+  const [err, setErr] = useState(null);
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -90,6 +92,12 @@ const Form = () => {
         }
     );
 
+    if (loggedInResponse.status === 400) {
+      const errorResponse = await loggedInResponse.json();
+      setErr(errorResponse.msg)      
+      return;
+    }
+
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
 
@@ -100,6 +108,7 @@ const Form = () => {
                 token: loggedIn.token,
             })
         );
+        setErr(null);
         navigate("/home");
     }
   };
@@ -130,11 +139,7 @@ const Form = () => {
             display="grid"
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            sx={{
-              "& > div": {
-                gridColumn: isNonMobile ? undefined : "span 4",
-              },
-            }}
+            
           >
             {isRegister && (
               <>
@@ -254,6 +259,13 @@ const Form = () => {
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />
+            {
+              err && (
+                <Typography sx={{ gridColumn: "span 4" }}>
+                  <Alert severity="error">{err}</Alert>
+                </Typography>
+              )
+            }
           </Box>
 
           {/* Buttons */}
@@ -275,6 +287,7 @@ const Form = () => {
             <Typography
                 onClick={() => {
                     setPageType(isLogin ? "register" : "login");
+                    setErr(null);
                     resetForm();
                 }}
                 sx={{

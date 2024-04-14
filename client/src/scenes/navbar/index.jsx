@@ -9,6 +9,7 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
+  AppBar,
 } from "@mui/material";
 
 import {
@@ -45,7 +46,12 @@ function Navbar() {
   const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+    <FlexBetween 
+      padding="1rem 6%" 
+      backgroundColor={alt} 
+      sx={{    
+        boxShadow: `0px 2px 4px ${theme.palette.mode === "dark" ? "rgba(242, 242, 242, 0.2)" : "rgba(0, 0, 0, 0.1)"}`
+    }}>
       <FlexBetween gap="5rem">
         <Typography
           fontWeight="bold"
@@ -96,7 +102,7 @@ function Navbar() {
               value={fullName}
               sx={{
                 backgroundColor: neutralLight,
-                width: "165px",
+                maxWidth: "250px",
                 borderRadius: "0.25rem",
                 padding: "0.25rem 1rem",
                 "& .MuiSvgIcon-root": {
@@ -109,7 +115,7 @@ function Navbar() {
               }}
               input={<InputBase />}
             >
-              <MenuItem value={fullName}>
+              <MenuItem value={fullName} onClick={()=>navigate("/home")}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>Logout</MenuItem>
