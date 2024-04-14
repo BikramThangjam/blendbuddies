@@ -73,6 +73,22 @@ const MyPostWidget = ({ picturePath }) => {
             padding: "1rem 2rem",
           }}
         />
+        {
+          isNonMobileScreens && (
+            <Button
+              disabled={!post}
+              onClick={handlePost}
+              sx={{
+                color: "white",
+                backgroundColor: palette.primary.main,
+                borderRadius: "3rem",
+              }}
+            >
+              POST
+            </Button>
+          )
+        }
+        
       </FlexBetween>
       {isImage && (
         <Box
@@ -101,7 +117,7 @@ const MyPostWidget = ({ picturePath }) => {
                 >
                   <input {...getInputProps()} />
 
-                  {!image? (
+                  {!image ? (
                     <p>Add image here </p>
                   ) : (
                     <FlexBetween>
@@ -110,74 +126,72 @@ const MyPostWidget = ({ picturePath }) => {
                     </FlexBetween>
                   )}
                 </Box>
-                {
-                    image && (
-                        <IconButton
-                            onClick={() => setImage(null)}
-                            sx={{width: "15%"}}                         
-                        >
-                            <DeleteOutlined />
-                        </IconButton>
-                    )
-                }
+                {image && (
+                  <IconButton
+                    onClick={() => setImage(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
               </FlexBetween>
             )}
           </Dropzone>
         </Box>
       )}
 
-      <Divider sx={{margin:"1.25rem 0"}}/>
+      <Divider sx={{ margin: "1.25rem 0" }} />
 
       <FlexBetween>
-        <FlexBetween gap="0.25rem" onClick={()=>setIsImage(!isImage)}>
-            <ImageOutlined sx={{color: "pointer"}} />
-            <Typography
-                color={medium}
-                sx={{"&:hover":{
-                    cursor: "pointer",
-                    color: medium
-                }}}
-            >
-                image
-            </Typography>
+        <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+          <ImageOutlined sx={{ color: "pointer" }} />
+          <Typography
+            color={medium}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                color: medium,
+              },
+            }}
+          >
+            image
+          </Typography>
         </FlexBetween>
-        
-        {
-            isNonMobileScreens ? (
-                <>
-                    <FlexBetween gap="0.25rem">
-                        <GifBoxOutlined sx={{color:medium}}  />
-                        <Typography color={medium}>Clip</Typography>
-                    </FlexBetween>
-                    <FlexBetween gap="0.25rem">
-                        <AttachFileOutlined sx={{color:medium}}  />
-                        <Typography color={medium}>Attachment</Typography>
-                    </FlexBetween>
-                    <FlexBetween gap="0.25rem">
-                        <MicOutlined sx={{color:medium}}  />
-                        <Typography color={medium}>Audio</Typography>
-                    </FlexBetween>
-                </>
-            ) : (
-                <>
-                    <FlexBetween gap="0.25rem">
-                        <MoreHorizOutlined sx={{color: medium}} />
-                    </FlexBetween>
 
-                    <Button 
-                        disabled={!post}
-                        onClick = {handlePost}
-                        sx={{
-                            color: "white",
-                            backgroundColor: palette.primary.main,
-                            borderRadius: "3rem"
-                        }}
-                    >
-                        POST
-                    </Button>
-                </>
-            )
-        }
+        {isNonMobileScreens ? (
+          <>
+            <FlexBetween gap="0.25rem">
+              <GifBoxOutlined sx={{ color: medium }} />
+              <Typography color={medium}>Clip</Typography>
+            </FlexBetween>
+            <FlexBetween gap="0.25rem">
+              <AttachFileOutlined sx={{ color: medium }} />
+              <Typography color={medium}>Attachment</Typography>
+            </FlexBetween>
+            <FlexBetween gap="0.25rem">
+              <MicOutlined sx={{ color: medium }} />
+              <Typography color={medium}>Audio</Typography>
+            </FlexBetween>
+          </>
+        ) : (
+          <>
+            <FlexBetween gap="0.25rem">
+              <MoreHorizOutlined sx={{ color: medium }} />
+            </FlexBetween>
+
+            <Button
+              disabled={!post}
+              onClick={handlePost}
+              sx={{
+                color: "white",
+                backgroundColor: palette.primary.main,
+                borderRadius: "3rem",
+              }}
+            >
+              POST
+            </Button>
+          </>
+        )}
       </FlexBetween>
     </WidgetWrapper>
   );
