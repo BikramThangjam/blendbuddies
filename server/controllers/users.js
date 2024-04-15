@@ -62,3 +62,44 @@ export const addRemoveFriend = async (req, res) => {
         res.status(404).json({message: err.message});
     }
 }
+
+export const updateSocial = async (req, res) => {
+    try {
+        const { userId } = req.params; // Assuming you're passing the user's ID in the request parameters
+        const { socialPlatform, profileUrl } = req.body; // Assuming you're sending the social platform and updated URL in the request body
+        console.log("userid ",userId);
+        // Validate if userId is provided
+        if (!userId) {
+            return res.status(400).json({ error: 'User ID is required' });
+        }
+
+        // Validate if socialPlatform and profileUrl are provided
+        if (!socialPlatform || !profileUrl) {
+            return res.status(400).json({ error: 'Social platform and profile URL are required' });
+        }
+
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        // Check if the user exists
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update the social profile URL based on the social platform
+        if (user.socialProfileUrl.hasOwnProperty(socialPlatform)) {
+            user.socialProfileUrl[socialPlatform] = profileUrl;
+        } else {
+            return res.status(400).json({ error: 'Invalid social platform' });
+        }
+
+        // Save the updated user data
+        await user.save();
+
+        // Return success response
+        return res.status(200).json({socialProfileUrl: user.socialProfileUrl} );
+    } catch (err) {
+        console.error('Error updating social profile URL:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

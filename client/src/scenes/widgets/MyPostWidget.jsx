@@ -25,6 +25,7 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../reducers";
+import { API_URL } from "../../config";
 
 const MyPostWidget = ({ picturePath}) => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const MyPostWidget = ({ picturePath}) => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`http://localhost:3001/posts`, {
+    const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -147,7 +148,6 @@ const MyPostWidget = ({ picturePath}) => {
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
           <ImageOutlined sx={{ color: "pointer" }} />
           <Typography
-            color={medium}
             sx={{
               "&:hover": {
                 cursor: "pointer",
@@ -162,22 +162,22 @@ const MyPostWidget = ({ picturePath}) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: medium }} />
-              <Typography color={medium} sx={{"&:hover": {cursor: "pointer",color: main}}}>Clip</Typography>
+              <GifBoxOutlined />
+              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Clip</Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: medium }} />
-              <Typography color={medium}  sx={{"&:hover": {cursor: "pointer",color: main}}}>Attachment</Typography>
+              <AttachFileOutlined  />
+              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Attachment</Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: medium }} />
-              <Typography color={medium}  sx={{"&:hover": {cursor: "pointer",color: main}}}>Audio</Typography>
+              <MicOutlined  />
+              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (
           <>
             <FlexBetween gap="0.25rem">
-              <MoreHorizOutlined sx={{ color: medium }} />
+              <MoreHorizOutlined  />
             </FlexBetween>
 
             <Button
@@ -185,7 +185,7 @@ const MyPostWidget = ({ picturePath}) => {
               onClick={handlePost}
               sx={{
                 color: "white",
-                backgroundColor: palette.primary.main,
+                backgroundColor: post ? palette.primary.main : palette.neutral.light,
                 borderRadius: "3rem",
               }}
             >

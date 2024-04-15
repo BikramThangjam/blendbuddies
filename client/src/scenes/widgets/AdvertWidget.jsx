@@ -1,7 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/WidgetWrapper";
-
+import { API_URL } from "../../config";
 
 const AdvertWidget = () => {
     const {palette} = useTheme()
@@ -26,11 +26,10 @@ const AdvertWidget = () => {
         </Typography>
     </FlexBetween>
     <img 
-        width="100%" 
-        height="auto" 
+        width="100%"  
         alt= "Ads"   
-        src="http://localhost:3001/assets/info4.jpeg"
-        style={{borderRadius: "0.75rem", margin: "0.75rem 0"}}     
+        src={`${API_URL}/assets/ads.jpg`}
+        style={{borderRadius: "0.75rem", margin: "0.75rem 0", maxHeight:"300px", objectFit: "cover"}}     
     />
     <FlexBetween>
         <Typography color={main}>Himalaya Cosmetics</Typography>

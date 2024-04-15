@@ -7,26 +7,45 @@ import {
 } from "@mui/material";
 import {
     ImageOutlined,
-    OndemandVideoOutlined
+    OndemandVideoOutlined,
+    RateReviewOutlined
     
   } from "@mui/icons-material";
   
 import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/WidgetWrapper";
 
-const CollectionWidgets = () => {
 
+const CollectionWidgets = ({setShowPhotos}) => {
+  
     const {palette} = useTheme();
     const medium = palette.neutral.medium;
     const main = palette.primary.main
 
+
   return (
     <WidgetWrapper>
       <Box display="flex" justifyContent="space-around" alignItems="center">
-        <FlexBetween gap="0.25rem">
-          <ImageOutlined sx={{ color: "pointer" }} />
+      <FlexBetween gap="0.25rem">
+          <RateReviewOutlined  />
           <Typography
-            color={medium}
+            
+            onClick={()=> setShowPhotos(false) }
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                color: main,
+              },
+            }}
+          >
+            Posts
+          </Typography>
+        </FlexBetween>
+        <FlexBetween gap="0.25rem">
+          <ImageOutlined  />
+          <Typography
+            
+            onClick={()=> setShowPhotos(true) }
             sx={{
               "&:hover": {
                 cursor: "pointer",
@@ -39,9 +58,9 @@ const CollectionWidgets = () => {
         </FlexBetween>
     
         <FlexBetween gap="0.25rem">
-          <OndemandVideoOutlined sx={{ color: medium }} />
+          <OndemandVideoOutlined  />
           <Typography 
-            color={medium}
+            
             sx={{
                 "&:hover": {
                   cursor: "pointer",

@@ -1,24 +1,30 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../scenes/navbar";
 import FriendListWidget from "../../scenes/widgets/FriendListWidget";
-import MyPostWidget from "../../scenes/widgets/MyPostWidget";
 import PostsWidget from "../../scenes/widgets/PostsWidget";
 import UserWidget from "../../scenes/widgets/UserWidget";
 import AdvertWidget from "../../scenes/widgets/AdvertWidget";
 import CollectionWidgets from "../../scenes/widgets/CollectionWidgets";
+import { API_URL } from "../../config";
+import PhotosWidget from "../../scenes/widgets/PhotosWidget";
+
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
+  const [showPhotos, setShowPhotos] = useState(false);
+
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
+  const posts = useSelector(state => state.posts);
+
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  const location = useLocation();
+
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`, {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -27,6 +33,16 @@ function ProfilePage() {
     const data = await response.json();
     setUser(data);
   };
+
+  const getUserPosts = (userId) => {
+    // Filter posts by userId
+    const userPosts = posts.filter(post => post.userId === userId);
+    
+    // Extract picturePath from each post
+    // const userPhotos = userPosts.map(post => post.picturePath);
+    
+    return userPosts;
+  }
 
   useEffect(() => {
     getUser();
@@ -55,8 +71,27 @@ function ProfilePage() {
           mt={isNonMobileScreens ? undefined : "2rem"}
           p="0 2rem"
         >
-          <CollectionWidgets />         
-          <PostsWidget userId={userId} isProfile />
+          <CollectionWidgets setShowPhotos={setShowPhotos} /> 
+
+          {
+            showPhotos ? (
+              <PhotosWidget posts={getUserPosts(userId)} />
+            ) : (
+              <Box
+            sx={{
+              overflowY: "auto",
+              maxHeight: "calc(100vh - 4rem)", // Adjust the max height as needed
+              scrollbarWidth: "none", // Hide scrollbar for Firefox
+              "&::-webkit-scrollbar": {
+              display: "none", // Hide scrollbar for Webkit-based browsers
+              },
+            }}
+          >
+            <PostsWidget userId={userId} isProfile />
+          </Box>
+            )
+          }
+                           
         </Box>
 
         <Box

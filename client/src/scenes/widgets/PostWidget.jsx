@@ -20,6 +20,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../reducers";
 import React from "react";
+import { API_URL } from "../../config";
+import moment from "moment";
 
 const PostWidget = ({
   postId,
@@ -31,7 +33,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
-  
+  createdAt,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -39,10 +41,12 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
+  const postTime = moment(createdAt).fromNow();
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+  const medium = palette.neutral.medium;
 
   // Modal
   const [open, setOpen] = React.useState(false);
@@ -50,7 +54,7 @@ const PostWidget = ({
   const handleClose = () => setOpen(false);
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const response = await fetch(`${API_URL}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -72,7 +76,7 @@ const PostWidget = ({
         userPicturePath={userPicturePath}
         
       />
-
+      <Typography color={medium} fontSize="0.75rem" mt="1.1rem">{postTime}</Typography>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -88,7 +92,7 @@ const PostWidget = ({
             cursor: "pointer",
           }}
           onClick={handleOpen}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`${API_URL}/assets/${picturePath}`}
         />
       )}
 
@@ -118,7 +122,7 @@ const PostWidget = ({
                 maxHeight: "100%",
                 objectFit: "scale-down",
               }} // Adjust image styles
-              src={`http://localhost:3001/assets/${picturePath}`}
+              src={`${API_URL}/assets/${picturePath}`}
               alt="Preview"
             />
           )}
