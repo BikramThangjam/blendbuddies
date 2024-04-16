@@ -22,7 +22,8 @@ const UserWidget = ({ userId, picturePath }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
 
-  const token = useSelector((state) => state.token);
+  const token = useSelector(state => state.token);
+  const friends = useSelector(state => state.user.friends);
   const socialProfileUrl = useSelector(state => state.user.socialProfileUrl)
   const dispatch = useDispatch()
 
@@ -61,7 +62,6 @@ const UserWidget = ({ userId, picturePath }) => {
     occupation,
     viewedProfile,
     impressions,
-    friends,
   } = user;
 
   return (
