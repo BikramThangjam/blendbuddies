@@ -10,7 +10,7 @@ import AdvertWidget from "../../scenes/widgets/AdvertWidget";
 import CollectionWidgets from "../../scenes/widgets/CollectionWidgets";
 import { API_URL } from "../../config";
 import PhotosWidget from "../../scenes/widgets/PhotosWidget";
-
+import EditProfilePage from "../../scenes/editProfilePage";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -53,6 +53,7 @@ function ProfilePage() {
   return (
     <Box>
       <Navbar />
+      <EditProfilePage />
       <Box
         width="100%"
         padding="2rem 6%"

@@ -6,6 +6,7 @@ import MyPostWidget from "../widgets/MyPostWidget";
 import PostsWidget from "../../scenes/widgets/PostsWidget";
 import AdvertWidget from "../../scenes/widgets/AdvertWidget";
 import FriendListWidget from "../../scenes/widgets/FriendListWidget";
+import EditProfilePage from "../../scenes/editProfilePage";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
@@ -13,6 +14,7 @@ const HomePage = () => {
   return (
     <Box>
       <Navbar />
+      <EditProfilePage  />
       <Box
         width="100%"
         padding="2rem 6%"

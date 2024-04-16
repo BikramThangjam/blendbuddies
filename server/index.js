@@ -17,6 +17,7 @@ import { verifyToken } from "./middleware/auth.js";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
 import {users, posts} from "./data/index.js";
+import { updateProfile } from "./controllers/users.js";
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +48,7 @@ const upload = multer({storage})
 // Routes with uploaded files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
-
+app.patch("/user/profile/:id", verifyToken, upload.single("picture"), updateProfile);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);

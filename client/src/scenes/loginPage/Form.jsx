@@ -139,8 +139,10 @@ const Form = () => {
           <Box
             display="grid"
             gap="30px"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            
+            gridTemplateColumns="repeat(4, minmax(0, 1fr))"    
+            sx={{
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            }}        
           >
             {isRegister && (
               <>
@@ -247,7 +249,7 @@ const Form = () => {
               name="email"
               error={Boolean(touched.email) && Boolean(errors.email)}
               helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
+              sx={{ gridColumn: "span 4"}}
             />
             <TextField
               label="Password"

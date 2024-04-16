@@ -47,7 +47,7 @@ export const addRemoveFriend = async (req, res) => {
         await user.save();
         await friend.save();
 
-        // Getting the 
+        
         const friends = await Promise.all(
             user.friends.map(id => User.findById(id))
         );
@@ -65,11 +65,11 @@ export const addRemoveFriend = async (req, res) => {
 
 export const updateSocial = async (req, res) => {
     try {
-        const { userId } = req.params; // Assuming you're passing the user's ID in the request parameters
+        const { id } = req.params; // Assuming you're passing the user's ID in the request parameters
         const { socialPlatform, profileUrl } = req.body; // Assuming you're sending the social platform and updated URL in the request body
-        console.log("userid ",userId);
+        
         // Validate if userId is provided
-        if (!userId) {
+        if (!id) {
             return res.status(400).json({ error: 'User ID is required' });
         }
 
@@ -79,7 +79,7 @@ export const updateSocial = async (req, res) => {
         }
 
         // Find the user by ID
-        const user = await User.findById(userId);
+        const user = await User.findById(id);
 
         // Check if the user exists
         if (!user) {
@@ -103,3 +103,32 @@ export const updateSocial = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { firstName, lastName, location, occupation, picturePath } = req.body;
+    const {id} = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ msg: 'Invalid user or user cannot be found' });
+    }
+
+    // Update user profile fields
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.location = location;
+    user.occupation = occupation;
+    user.picturePath = picturePath;
+
+    // Save the updated user
+    await user.save();
+
+    // Respond with success message
+    res.status(200).json({user, msg: "Profile has been updated successfully"});
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ msg: 'Internal server error' });
+  }
+};

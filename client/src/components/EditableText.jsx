@@ -61,7 +61,7 @@ const EditableText = ({ text, socialPlatform }) => {
   return (
     <FlexBetween gap="1rem" mb="0.5rem">
       <FlexBetween gap="1rem">
-        <img src="../assets/twitter.png" alt="twitter" />
+        <img src={`../assets/${socialPlatform}.png`} alt="twitter" />
         <Box>
           <Typography color={main} fontWeight="500">
             {/* Capitalize first letter of a word */}
