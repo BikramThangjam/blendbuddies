@@ -16,12 +16,15 @@ import {
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../reducers";
 import React from "react";
 import { API_URL } from "../../config";
 import moment from "moment";
+import CommentWidget from "./CommentWidget";
+import { postComments } from "../../data";
+import UserImage from "../../components/UserImage";
 
 const PostWidget = ({
   postId,
@@ -32,10 +35,17 @@ const PostWidget = ({
   picturePath,
   userPicturePath,
   likes,
-  comments,
+  // comments,
   createdAt,
 }) => {
-  const [isComments, setIsComments] = useState(false);
+  const [showAll, setShowAll] = useState(0);
+  const [showComments, setShowComments] = useState(0);
+  const [showReply, setShowReply] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [replyComments, setReplyComments] = useState(0);
+  const { firstName, lastName } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -67,6 +77,25 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  const getComments = async (postId) => {
+    const response = await fetch(`${API_URL}/posts/${postId}/comments`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setComments(data);
+      setReplyComments(0);
+    }
+  };
+
+  useEffect(() => {
+    getComments(postId);
+  }, []);
+
   return (
     <WidgetWrapper m="2rem">
       <Friend
@@ -74,11 +103,36 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
-        
       />
-      <Typography color={medium} fontSize="0.75rem" mt="1.1rem">{postTime}</Typography>
+      <Typography color={medium} fontSize="0.75rem" mt="1.1rem">
+        {postTime}
+      </Typography>
       <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
+        {showAll === postId ? description : description.slice(0, 300)}
+        {description.length > 300 &&
+          (showAll === postId ? (
+            <span
+              style={{
+                color: "#34a2eb",
+                cursor: "pointer",
+                marginLeft: "0.5rem",
+              }}
+              onClick={() => setShowAll(0)}
+            >
+              show less
+            </span>
+          ) : (
+            <span
+              style={{
+                color: "#34a2eb",
+                cursor: "pointer",
+                marginLeft: "0.5rem",
+              }}
+              onClick={() => setShowAll(postId)}
+            >
+              show more
+            </span>
+          ))}
       </Typography>
       {picturePath && (
         <img
@@ -145,10 +199,14 @@ const PostWidget = ({
 
           {/* Comments */}
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
+            <IconButton
+              onClick={() => {
+                setShowComments(showComments === postId ? null : postId);
+              }}
+            >
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
+            <Typography>{comments?.length}</Typography>
           </FlexBetween>
         </FlexBetween>
 
@@ -157,17 +215,71 @@ const PostWidget = ({
         </IconButton>
       </FlexBetween>
 
-      {isComments && (
+      {/* COMMENTS */}
+
+      {showComments === postId && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
-          <Divider />
+          <CommentWidget
+            userId={loggedInUserId}
+            postId={postId}
+            from={`${firstName} ${lastName}`}
+            getComments={getComments}
+          />
+
+          {loading ? (
+            "Loading..."
+          ) : comments?.length > 0 ? (
+            comments?.map((comment, i) => (
+              <Box
+                key={i}
+                pt="1.2rem"
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box display="flex" justifyContent="flex-start" gap="1.2rem">
+                  <UserImage
+                    image={comment?.userId?.picturePath}
+                    size="30px"
+                    flexBasis="50px"
+                  />
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="85%"
+                  >
+                    <Typography
+                      color={main}
+                      variant="h6"
+                      fontWeight="500"
+                      sx={{
+                        "&:hover": {
+                          color: palette.primary.light,
+                          cursor: "pointer",
+                        },
+                      }}
+                    >
+                      {`${comment?.userId.firstName} ${comment?.userId.lastName}`}
+                    </Typography>
+                    <Typography>{comment.comment}</Typography>
+                  </Box>
+                </Box>
+                <Typography minWidth="130px">{moment(comment.updatedAt).fromNow()}</Typography>
+              </Box>
+            ))
+          ) : (
+            <Typography
+              py="1.5rem"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              No comments, be the first to comment
+            </Typography>
+          )}
         </Box>
       )}
     </WidgetWrapper>

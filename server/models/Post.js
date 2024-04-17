@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const PostSchema = mongoose.Schema({
     userId: {
@@ -21,10 +21,7 @@ const PostSchema = mongoose.Schema({
         type: Map,
         of: Boolean,
     },
-    comments: {
-        type: Array,
-        default: []
-    }
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 }, {timestamps: true});
 
 const Post = mongoose.model("Post", PostSchema);
