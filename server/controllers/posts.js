@@ -92,7 +92,6 @@ export const getComments = async (req, res) => {
       .sort({ _id: -1 });
 
     res.status(200).json(postComments);
-
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: error.message });
@@ -125,7 +124,7 @@ export const addComment = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   try {
-    const {id} = req.params; // Assuming the post ID is passed as a route parameter
+    const { id } = req.params; // Assuming the post ID is passed as a route parameter
     const deletedPost = await Post.findByIdAndDelete(id);
 
     if (!deletedPost) {
@@ -134,9 +133,29 @@ export const deletePost = async (req, res) => {
 
     const updatedPosts = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(updatedPosts);
-    
   } catch (error) {
     console.error("Error deleting post:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
+};
+
+export const searchPost = async (req, res) => {
+  const { searchTerm } = req.query;
+  try {
+    let searchPostQuery = {};
+
+    if (searchTerm) {
+      searchPostQuery = {
+        $or: [
+          { description: { $regex: searchTerm, $options: "i" } },
+        ],
+      };
+    }
+
+    const posts = await Post.find(searchPostQuery).sort({ _id: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};

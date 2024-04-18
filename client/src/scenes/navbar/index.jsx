@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   IconButton,
@@ -24,14 +24,19 @@ import {
 } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "../../reducers";
+import { setMode, setLogout, setPosts } from "../../reducers";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
+import { API_URL } from "../../config";
+import { debounce } from "lodash";
 
 function Navbar() {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token);
   const user = useSelector((state) => state?.user);
   const mode = useSelector((state) => state.mode);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
@@ -45,13 +50,52 @@ function Navbar() {
 
   const fullName = `${user.firstName} ${user.lastName}`;
 
+  // Debounce search 
+  const handleSearch = (e) => {
+    setSearchTerm(e?.target?.value);
+  };
+
+  useEffect(() => {
+    const delaySearch = setTimeout(async () => {
+      
+      try {
+        const res = await fetch(
+          `${API_URL}/posts/search?searchTerm=${searchTerm}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const allPosts = await res.json();
+        dispatch(setPosts({ posts: allPosts }));
+      } catch (error) {
+        console.error(error);
+      }
+      
+    }, 300);
+
+    // Cleanup function to clear the timeout on component unmount or when searchTerm changes
+    return () => clearTimeout(delaySearch);
+
+  }, [searchTerm]);
+
+  
+
+
   return (
-    <FlexBetween 
-      padding="1rem 6%" 
-      backgroundColor={alt} 
-      sx={{    
-        boxShadow: `0px 2px 4px ${theme.palette.mode === "dark" ? "rgba(242, 242, 242, 0.2)" : "rgba(0, 0, 0, 0.1)"}`
-    }}>
+    <FlexBetween
+      padding="1rem 6%"
+      backgroundColor={alt}
+      sx={{
+        boxShadow: `0px 2px 4px ${
+          theme.palette.mode === "dark"
+            ? "rgba(242, 242, 242, 0.2)"
+            : "rgba(0, 0, 0, 0.1)"
+        }`,
+      }}
+    >
       <FlexBetween gap="5rem">
         <Typography
           fontWeight="bold"
@@ -76,8 +120,12 @@ function Navbar() {
             gap="4rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
-            <IconButton>
+            <InputBase
+              placeholder="Search posts..."
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <IconButton onClick={handleSearch}>
               <Search />
             </IconButton>
           </FlexBetween>
@@ -115,7 +163,7 @@ function Navbar() {
               }}
               input={<InputBase />}
             >
-              <MenuItem value={fullName} onClick={()=>navigate("/home")}>
+              <MenuItem value={fullName} onClick={() => navigate("/home")}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
               <MenuItem onClick={() => dispatch(setLogout())}>Logout</MenuItem>
