@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { TextField, Typography, useTheme, Box } from "@mui/material";
-import { EditOutlined } from "@mui/icons-material";
+import { EditOutlined, SaveOutlined } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { API_URL } from "../config";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserProfile } from "../reducers";
 
-const EditableText = ({ text, socialPlatform }) => {
+const EditableText = ({ text, socialPlatform, userId, loggedInUserId, getUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(text);
 
-  const userId = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
   const dispatch = useDispatch();
 
@@ -28,7 +27,6 @@ const EditableText = ({ text, socialPlatform }) => {
 
   const handleEditEnd = async () => {
     setIsEditing(false);
-   
     try {
       const response = await fetch(`${API_URL}/users/${userId}`, {
         method: "PATCH",
@@ -48,10 +46,10 @@ const EditableText = ({ text, socialPlatform }) => {
         );
       }
 
-      const updatedText = await response.json();
-      // const {socialProfileUrl} = updatedText;
-      // console.log(socialProfileUrl);
-      dispatch(setUserProfile(updatedText));
+      // const updatedText = await response.json();
+      // dispatch(setUserProfile(updatedText));
+      getUser()
+
     } catch (error) {
       console.error("Error updating social profile URL:", error);
       // Handle error appropriately, e.g., show error message to the user
@@ -59,37 +57,48 @@ const EditableText = ({ text, socialPlatform }) => {
   };
 
   return (
-    <FlexBetween gap="1rem" mb="0.5rem">
-      <FlexBetween gap="1rem">
+   
+      <Box gap="1rem" display="flex" alignItems="center" justifyContent="flex-start">
         <img src={`../assets/${socialPlatform}.png`} alt="twitter" />
-        <Box>
+        <Box width="100%">
           <Typography color={main} fontWeight="500">
             {/* Capitalize first letter of a word */}
-            {`${socialPlatform.charAt(0).toUpperCase()}${socialPlatform.slice(1)}` } 
+            {`${socialPlatform.charAt(0).toUpperCase()}${socialPlatform.slice(
+              1
+            )}`}
           </Typography>
 
-          <FlexBetween gap="4rem">
+          <FlexBetween >
             {isEditing ? (
               <TextField
                 variant="standard"
                 value={editedText}
                 onChange={handleInputChange}
-                onBlur={handleEditEnd}
+                fullWidth
+                sx={{paddingRight: "2rem"}}
               />
             ) : (
-              <Typography
-                color={medium}
-                fontWeight="500"
-                onDoubleClick={handleEditStart}
-              >
+              <Typography color={medium} fontWeight="500" width="85%" overflow="hidden" sx={{paddingRight: "2rem"}}>
                 {text}
               </Typography>
             )}
-            <EditOutlined sx={{ color: medium }} onClick={handleEditStart} />
+
+            {userId === loggedInUserId &&
+              (isEditing ? (
+                <SaveOutlined 
+                  
+                  onClick={handleEditEnd}  
+                />
+              ) : (
+                <EditOutlined
+                  alignItems="flex-end"
+                  onClick={handleEditStart}
+                />
+              ))}
           </FlexBetween>
         </Box>
-      </FlexBetween>
-    </FlexBetween>
+      </Box>
+    
   );
 };
 

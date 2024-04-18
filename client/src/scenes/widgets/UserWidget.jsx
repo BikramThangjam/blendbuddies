@@ -10,21 +10,23 @@ import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { API_URL } from "../../config";
 import EditableText from "../../components/EditableText";
 import { openModal } from "../../reducers";
 
-const UserWidget = ({ userId, picturePath }) => {
+const UserWidget = ({ userId, picturePath}) => {
   const [user, setUser] = useState(null);
-  // const [text, setText] = useState(socialProfileUrl);
+  const loggedInUser = useSelector(state => state.user._id);
 
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const currentRoute = useLocation();
+
+  // console.log(currentRoute.pathname);
 
   const token = useSelector(state => state.token);
   const friends = useSelector(state => state.user.friends);
-  const socialProfileUrl = useSelector(state => state.user.socialProfileUrl)
   const dispatch = useDispatch()
 
   const dark = palette.neutral.dark;
@@ -98,10 +100,15 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined 
-          onClick={() => dispatch(openModal())} 
-          sx={{ "&:hover": { cursor: "pointer" } }}
-        />
+        {
+          currentRoute.pathname !== "/home" && user._id == loggedInUser && (
+            <ManageAccountsOutlined 
+              onClick={() => dispatch(openModal())} 
+              sx={{ "&:hover": { cursor: "pointer" } }}
+            />
+          )
+        }
+        
       </FlexBetween>
 
       <Divider />
@@ -144,8 +151,8 @@ const UserWidget = ({ userId, picturePath }) => {
           Social Profiles
         </Typography>
 
-        <EditableText text={socialProfileUrl.linkedin} socialPlatform="linkedin"/>
-        <EditableText text={socialProfileUrl.twitter} socialPlatform="twitter"/>     
+        <EditableText text={user?.socialProfileUrl.linkedin} socialPlatform="linkedin" userId={userId} loggedInUserId = {loggedInUser} getUser={getUser}/>
+        <EditableText text={user?.socialProfileUrl.twitter} socialPlatform="twitter" userId={userId} loggedInUserId = {loggedInUser} getUser={getUser} />     
 
       </Box>
     </WidgetWrapper>

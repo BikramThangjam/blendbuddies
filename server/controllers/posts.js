@@ -122,3 +122,21 @@ export const addComment = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const deletePost = async (req, res) => {
+  try {
+    const {id} = req.params; // Assuming the post ID is passed as a route parameter
+    const deletedPost = await Post.findByIdAndDelete(id);
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const updatedPosts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(updatedPosts);
+    
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}

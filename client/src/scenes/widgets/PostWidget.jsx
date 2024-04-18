@@ -3,6 +3,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
+  DeleteOutlineOutlined,
 } from "@mui/icons-material";
 
 import {
@@ -18,7 +19,7 @@ import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../../reducers";
+import { setPost, setPosts } from "../../reducers";
 import React from "react";
 import { API_URL } from "../../config";
 import moment from "moment";
@@ -63,7 +64,7 @@ const PostWidget = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const patchLike = async () => {
+  const handlePatchLike = async () => {
     const response = await fetch(`${API_URL}/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
@@ -76,6 +77,18 @@ const PostWidget = ({
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
+
+  const handleDeletePost = async () => {
+    const response = await fetch(`${API_URL}/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+
+    const updatedPosts = await response.json();
+    dispatch(setPosts({posts: updatedPosts}));
+  }
 
   const getComments = async (postId) => {
     const response = await fetch(`${API_URL}/posts/${postId}/comments`, {
@@ -107,7 +120,7 @@ const PostWidget = ({
       <Typography color={medium} fontSize="0.75rem" mt="1.1rem">
         {postTime}
       </Typography>
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Typography color={main} sx={{ mt: "1rem"}}>
         {showAll === postId ? description : description.slice(0, 300)}
         {description.length > 300 &&
           (showAll === postId ? (
@@ -187,7 +200,7 @@ const PostWidget = ({
         <FlexBetween gap="1rem">
           {/* Like */}
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
+            <IconButton onClick={handlePatchLike}>
               {isLiked ? (
                 <FavoriteOutlined sx={{ color: primary }} />
               ) : (
@@ -208,6 +221,18 @@ const PostWidget = ({
             </IconButton>
             <Typography>{comments?.length}</Typography>
           </FlexBetween>
+
+          {/* Like */}
+          <FlexBetween gap="0.3rem">
+            {
+              postUserId === loggedInUserId && (
+                <IconButton onClick={handleDeletePost}>
+                  <DeleteOutlineOutlined />
+                </IconButton>
+              )
+            }
+          </FlexBetween>
+
         </FlexBetween>
 
         <IconButton>

@@ -1,5 +1,5 @@
 import express from "express";
-import {getComments, getFeedPosts, getUserPosts, likePost, addComment} from "../controllers/posts.js";
+import {getComments, getFeedPosts, getUserPosts, likePost, addComment, deletePost} from "../controllers/posts.js";
 import { verifyToken } from "../middleware/auth.js";
 
 
@@ -9,6 +9,7 @@ router.get("/", verifyToken, getFeedPosts);
 router.get("/:userId/posts", verifyToken, getUserPosts);
 router.patch("/:id/like", verifyToken, likePost);
 router.get("/:postId/comments", verifyToken, getComments);
-router.post("/addComment", verifyToken, addComment)
+router.post("/addComment", verifyToken, addComment);
+router.delete("/:id", verifyToken, deletePost)
 
 export default router;

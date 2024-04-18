@@ -60,6 +60,13 @@ const MyPostWidget = ({ picturePath}) => {
     setPost("");
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); 
+      handlePost();
+    }
+  };
+
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
@@ -74,6 +81,7 @@ const MyPostWidget = ({ picturePath}) => {
             borderRadius: "2rem",
             padding: "1rem 2rem",
           }}
+          onKeyPress={handleKeyPress}
         />
         {
           isNonMobileScreens && (
