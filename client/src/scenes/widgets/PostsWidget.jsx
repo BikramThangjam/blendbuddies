@@ -10,6 +10,7 @@ const PostsWidget = ({userId, isProfile = false}) => {
     const dispatch = useDispatch();
     const posts = useSelector(state => state.posts);
     const token = useSelector(state => state.token);
+    const loggedInUserId = useSelector(state => state.user._id);
    
 
     const getPosts = async () => {
@@ -80,7 +81,12 @@ const PostsWidget = ({userId, isProfile = false}) => {
                     )
                 ) : (
                     <Box sx={{display: "flex", justifyContent:"center", margin: "2rem 0"}}>
-                        <Typography>You have not created any post. </Typography>
+                        {userId === loggedInUserId ? (
+                            <Typography>You have not created any post.</Typography>
+                        ): (
+                            <Typography>There is no post to show.</Typography>
+                        )}
+                                        
                     </Box>
                 )
             }

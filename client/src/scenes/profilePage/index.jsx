@@ -37,11 +37,7 @@ function ProfilePage() {
 
   const getUserPosts = (userId) => {
     // Filter posts by userId
-    const userPosts = posts.filter(post => post.userId === userId);
-    
-    // Extract picturePath from each post
-    // const userPhotos = userPosts.map(post => post.picturePath);
-    
+    const userPosts = posts.filter(post => post.userId === userId);    
     return userPosts;
   }
 
