@@ -22,15 +22,16 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 
-app.use(cors());
-app.use(cors(
-    {
-        origin: ["https://blendbuddies-socialmedia-app.vercel.app"],
-        methods: ["GET", "POST", "PATCH", "DELETE"],
-        preflightContinue: false,
-        credentials: true
-    }
-))
+app.use(cors({
+    origin: "https://blendbuddies-socialmedia-app.vercel.app",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    preflightContinue: false,
+    credentials: true
+  }));
+
+  // Middleware to handle OPTIONS requests
+app.options('*', cors());
+
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
