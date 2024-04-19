@@ -11,14 +11,14 @@ import UserImage from "./UserImage";
 
 import React from 'react'
 
-function Friend({friendId, name, subtitle, userPicturePath}) {
+function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions}) {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
     const isProfileRoute = location.pathname.includes("/profile/");
 
-    const {_id, email} = useSelector(state => state.user);
+    const {_id} = useSelector(state => state.user);
     const token = useSelector(state => state.token);
     const friends = useSelector(state => state.user.friends);
 
@@ -43,6 +43,7 @@ function Friend({friendId, name, subtitle, userPicturePath}) {
         
             const data = await response.json();
             dispatch(setFriends({friends: data}));
+            getFriendSuggestions();
     };
 
 

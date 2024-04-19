@@ -55,26 +55,26 @@ function Navbar() {
     setSearchTerm(e?.target?.value);
   };
 
+  const searchQuery = async () => {
+    try {
+      const res = await fetch(
+        `${API_URL}/posts/search?searchTerm=${searchTerm}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const allPosts = await res.json();
+      dispatch(setPosts({ posts: allPosts }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const delaySearch = setTimeout(async () => {
-      
-      try {
-        const res = await fetch(
-          `${API_URL}/posts/search?searchTerm=${searchTerm}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const allPosts = await res.json();
-        dispatch(setPosts({ posts: allPosts }));
-      } catch (error) {
-        console.error(error);
-      }
-      
-    }, 300);
+    const delaySearch = setTimeout(searchQuery, 300);
 
     // Cleanup function to clear the timeout on component unmount or when searchTerm changes
     return () => clearTimeout(delaySearch);
@@ -125,7 +125,7 @@ function Navbar() {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <IconButton onClick={handleSearch}>
+            <IconButton>
               <Search />
             </IconButton>
           </FlexBetween>

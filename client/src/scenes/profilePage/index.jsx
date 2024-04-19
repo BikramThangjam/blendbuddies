@@ -11,6 +11,7 @@ import CollectionWidgets from "../../scenes/widgets/CollectionWidgets";
 import { API_URL } from "../../config";
 import PhotosWidget from "../../scenes/widgets/PhotosWidget";
 import EditProfilePage from "../../scenes/editProfilePage";
+import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -100,6 +101,8 @@ function ProfilePage() {
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
           <AdvertWidget></AdvertWidget>
+          <Box m="2rem 0" />
+          <SuggestedFriendsWidget/>
         </Box>
       </Box>
     </Box>

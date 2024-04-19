@@ -1,5 +1,14 @@
 import User from "../models/User.js";
 
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({message: err.message});
+    }
+}
+
 export const getUser = async (req, res) => {
     try {
         const {id} = req.params;
@@ -9,6 +18,8 @@ export const getUser = async (req, res) => {
         res.status(404).json({message: err.message});
     }
 }
+
+
 
 export const getUserFriends = async (req, res) => {
     try {
@@ -26,6 +37,28 @@ export const getUserFriends = async (req, res) => {
         res.status(200).json(formattedFriends)  
     } catch (err) {
         res.status(404).json({message: err.message});
+    }
+}
+
+export const getFriendSuggestions = async (req, res) => {
+    try {
+        // Get the ID of the current logged-in user
+        const loggedInUserId = req.params.id;
+
+        // Find the logged-in user's details
+        const loggedInUser = await User.findById(loggedInUserId);
+
+        const friendSuggestions = await User.find({
+           $and: [
+            {_id : {$ne : loggedInUserId}},
+            {_id : {$nin : loggedInUser.friends}}, 
+           ]
+        });
+
+
+        res.status(200).json(friendSuggestions);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 

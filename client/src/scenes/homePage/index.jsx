@@ -7,9 +7,11 @@ import PostsWidget from "../../scenes/widgets/PostsWidget";
 import AdvertWidget from "../../scenes/widgets/AdvertWidget";
 import FriendListWidget from "../../scenes/widgets/FriendListWidget";
 import EditProfilePage from "../../scenes/editProfilePage";
+import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const user = useSelector(state => state.user);
   const { _id, picturePath } = useSelector((state) => state.user);
   return (
     <Box>
@@ -24,6 +26,8 @@ const HomePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "25%" : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
+          <Box m="2rem 0" />
+          <FriendListWidget userId={_id} />
         </Box>
 
         <Box
@@ -35,7 +39,7 @@ const HomePage = () => {
           <Box
             sx={{
                 overflowY: "auto",
-                maxHeight: "calc(100vh - 4rem)", // Adjust the max height as needed
+                maxHeight: "calc(100vh + 4rem)", // Adjust the max height as needed
                 scrollbarWidth: "none", // Hide scrollbar for Firefox
                 "&::-webkit-scrollbar": {
                 display: "none", // Hide scrollbar for Webkit-based browsers
@@ -51,7 +55,7 @@ const HomePage = () => {
           <Box flexBasis="26%">
             <AdvertWidget />
             <Box m="2rem 0" />
-            <FriendListWidget userId={_id} />
+            <SuggestedFriendsWidget />
           </Box>
         )}
       </Box>

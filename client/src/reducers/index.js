@@ -6,6 +6,7 @@ const initialState = {
     token: null,
     posts: [],
     isOpen: false,
+    suggestedFriends: [],
 }
 
 export const authSlice = createSlice({
@@ -43,6 +44,14 @@ export const authSlice = createSlice({
             }
         },
 
+        setSuggestedFriends: (state, action) => {
+            if(state.suggestedFriends){
+                state.suggestedFriends = action.payload.suggestedFriends;
+            }else {
+                console.error("user friends non-existent");
+            }
+        },
+
         setPosts: (state, action) => {
             state.posts = action.payload.posts;
         },
@@ -63,5 +72,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const {setMode, openModal, closeModal, setLogin, setLogout, setFriends, setPost, setPosts, setUserProfile} = authSlice.actions;
+export const {setMode, openModal, closeModal, setLogin, setLogout, setFriends, setPost, setPosts, setUserProfile, setSuggestedFriends} = authSlice.actions;
 export default authSlice.reducer;

@@ -28,7 +28,7 @@ const AdvertWidget = () => {
     <img 
         width="100%"  
         alt= "Ads"   
-        src={`${API_URL}/assets/ads.jpg`}
+        src={`${API_URL}/assets/ads/ads1.jpg`}
         style={{borderRadius: "0.75rem", margin: "0.75rem 0", maxHeight:"300px", objectFit: "cover"}}     
     />
     <FlexBetween>

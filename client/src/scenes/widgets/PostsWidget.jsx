@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setPosts} from "../../reducers";
 import PostWidget from "./PostWidget";
 import { API_URL } from "../../config";
+import { Box, Typography } from "@mui/material";
 
 
 const PostsWidget = ({userId, isProfile = false}) => {
@@ -46,35 +47,41 @@ const PostsWidget = ({userId, isProfile = false}) => {
     return (
         <>
             {
-                posts.map(
-                    ({
-                        _id,
-                        userId,
-                        firstName,
-                        lastName,
-                        description,
-                        location,
-                        picturePath,
-                        userPicturePath,
-                        likes,
-                        comments,
-                        createdAt,
-                    })=>(
-                        <PostWidget 
-                            key={_id}
-                            postId={_id}
-                            postUserId={userId}
-                            name = {`${firstName} ${lastName}`}
-                            description={description}
-                            location={location}
-                            picturePath={picturePath}
-                            userPicturePath={userPicturePath}
-                            likes={likes}
-                            comments={comments}
-                            createdAt={createdAt}
-                            
-                        />
+                posts?.length > 0 ? (
+                    posts.map(
+                        ({
+                            _id,
+                            userId,
+                            firstName,
+                            lastName,
+                            description,
+                            location,
+                            picturePath,
+                            userPicturePath,
+                            likes,
+                            comments,
+                            createdAt,
+                        })=>(
+                            <PostWidget 
+                                key={_id}
+                                postId={_id}
+                                postUserId={userId}
+                                name = {`${firstName} ${lastName}`}
+                                description={description}
+                                location={location}
+                                picturePath={picturePath}
+                                userPicturePath={userPicturePath}
+                                likes={likes}
+                                comments={comments}
+                                createdAt={createdAt}
+                                
+                            />
+                        )
                     )
+                ) : (
+                    <Box sx={{display: "flex", justifyContent:"center", margin: "2rem 0"}}>
+                        <Typography>You have not created any post. </Typography>
+                    </Box>
                 )
             }
         </>

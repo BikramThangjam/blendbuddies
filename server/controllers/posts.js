@@ -89,7 +89,7 @@ export const getComments = async (req, res) => {
         path: "replies.userId",
         select: "firstName lastName location picturePath",
       })
-      .sort({ _id: -1 });
+      
 
     res.status(200).json(postComments);
   } catch (error) {
