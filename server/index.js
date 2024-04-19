@@ -20,21 +20,23 @@ import { updateProfile } from "./controllers/users.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
-const app = express()
+const app = express();
+
+app.use(cors());
+app.use(cors(
+    {
+        origin: ["https://blendbuddies-socialmedia-app.vercel.app"],
+        methods: ["GET", "POST", "PATCH", "DELETE"],
+        preflightContinue: false,
+        credentials: true
+    }
+))
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
 app.use(morgan("combined"));
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
-app.use(cors());
-app.use(cors(
-    {
-        origin: ["https://blendbuddies-socialmedia-app.vercel.app"],
-        methods: ["GET", "POST", "PATCH", "DELETE"],
-        credentials: true
-    }
-))
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
 // File storage
