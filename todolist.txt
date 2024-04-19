@@ -1,3 +1,0 @@
-1. Edit profile feature
-2. add comment feture
-3. generate random sponsor ads picture 
