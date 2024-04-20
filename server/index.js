@@ -22,15 +22,15 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 
-// const corsOptions = {
-//     origin: 'https://blendbuddies-client.vercel.app',
-//     credentials: true
-//   };
+const corsOptions = {
+    origin: 'https://blendbuddies-client.vercel.app',
+    credentials: true
+};
 
 app.use(express.json());
 
-app.use(cors());
-// app.options('*', cors()); // Handle preflight requests
+app.use(cors(corsOptions));
+app.options('*', cors()); // Handle preflight requests
 
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
