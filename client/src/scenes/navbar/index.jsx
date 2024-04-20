@@ -28,7 +28,6 @@ import { setMode, setLogout, setPosts } from "../../reducers";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 import { API_URL } from "../../config";
-import { debounce } from "lodash";
 
 function Navbar() {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -45,7 +44,6 @@ function Navbar() {
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;

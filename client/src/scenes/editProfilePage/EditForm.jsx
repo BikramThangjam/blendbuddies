@@ -19,7 +19,6 @@ import FlexBetween from "../../components/FlexBetween";
 
 import { API_URL } from "../../config";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { closeModal, setLogin } from "../../reducers";
 
 const editProfileSchema = Yup.object().shape({
@@ -48,7 +47,6 @@ const EditForm = () => {
 
   const token = useSelector(state => state.token);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const updateProfile = async (values, onSubmitProps) => {
     // this allows us to send form info with image

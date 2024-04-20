@@ -10,6 +10,7 @@ import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
 import React from 'react'
+import { API_URL } from "../config";
 
 function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions}) {
     
@@ -32,7 +33,7 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
 
 
     const patchFriend = async () =>  {
-        const response = await fetch(`http://localhost:3001/users/${_id}/${friendId}`,
+        const response = await fetch(`${API_URL}/users/${_id}/${friendId}`,
             {
                 method: "PATCH",
                 headers: {

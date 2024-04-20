@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, IconButton } from "@mui/material";
+import { Box, TextField, IconButton } from "@mui/material";
 import { SendOutlined } from "@mui/icons-material";
 import UserImage from "../../components/UserImage";
 import { Formik } from "formik";

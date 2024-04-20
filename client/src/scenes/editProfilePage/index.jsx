@@ -1,7 +1,6 @@
 import {
   Box,
   Typography,
-  useTheme,
   useMediaQuery,
   Backdrop,
   Modal,

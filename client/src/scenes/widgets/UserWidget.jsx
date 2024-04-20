@@ -1,6 +1,5 @@
 import {
   ManageAccountsOutlined,
-  EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
@@ -23,7 +22,6 @@ const UserWidget = ({ userId, picturePath}) => {
   const navigate = useNavigate();
   const currentRoute = useLocation();
 
-  // console.log(currentRoute.pathname);
 
   const token = useSelector(state => state.token);
   const friends = useSelector(state => state.user.friends);
@@ -44,10 +42,6 @@ const UserWidget = ({ userId, picturePath}) => {
     const data = await response.json();
     setUser(data);
   };
-
-  // const handleTextChange = (newText) => {
-  //   setText(newText)
-  // };
 
   useEffect(() => {
     getUser();

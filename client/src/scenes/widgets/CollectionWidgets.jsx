@@ -2,8 +2,6 @@ import {
   Box,
   Typography,
   useTheme,
-  IconButton,
-  useMediaQuery,
 } from "@mui/material";
 import {
     ImageOutlined,
@@ -19,7 +17,6 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 const CollectionWidgets = ({setShowPhotos}) => {
   
     const {palette} = useTheme();
-    const medium = palette.neutral.medium;
     const main = palette.primary.main
 
 
