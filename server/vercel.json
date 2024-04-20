@@ -10,13 +10,6 @@
             "headers": {
                 "Access-Control-Allow-Origin": "*"
             }
-        },
-        { 
-            "src": "/(.*)/(.*)", 
-            "dest": "/",
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
         }
       ]
   }
