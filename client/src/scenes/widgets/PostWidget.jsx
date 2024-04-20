@@ -12,6 +12,7 @@ import {
   IconButton,
   useTheme,
   Modal,
+  CircularProgress,
 } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
@@ -249,7 +250,9 @@ const PostWidget = ({
           />
 
           {loading ? (
-            "Loading..."
+            <Typography sx={{display: "flex", justifyContent:"center", paddingTop: "2rem"}}>
+              <CircularProgress color="secondary" />
+            </Typography>
           ) : comments?.length > 0 ? (
             comments?.map((comment, i) => (
               <Box

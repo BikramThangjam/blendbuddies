@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -16,6 +16,7 @@ import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget"
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [showPhotos, setShowPhotos] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
@@ -25,14 +26,19 @@ function ProfilePage() {
 
 
   const getUser = async () => {
+    setLoading(true)
     const response = await fetch(`${API_URL}/users/${userId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = await response.json();
-    setUser(data);
+    if(response.ok){
+      const data = await response.json();
+      setUser(data);
+      setLoading(false)
+    }
+    
   };
 
   const getUserPosts = (userId) => {
@@ -72,22 +78,29 @@ function ProfilePage() {
           <CollectionWidgets setShowPhotos={setShowPhotos} /> 
 
           {
-            showPhotos ? (
-              <PhotosWidget posts={getUserPosts(userId)} />
+            loading ? (
+              <Typography sx={{display: "flex", justifyContent:"center", paddingTop: "2rem"}}>
+                <CircularProgress color="secondary" />
+              </Typography>
             ) : (
-              <Box
-            sx={{
-              overflowY: "auto",
-              maxHeight: "calc(100vh - 4rem)", // Adjust the max height as needed
-              scrollbarWidth: "none", // Hide scrollbar for Firefox
-              "&::-webkit-scrollbar": {
-              display: "none", // Hide scrollbar for Webkit-based browsers
-              },
-            }}
-          >
-            <PostsWidget userId={userId} isProfile />
-          </Box>
+              showPhotos ? (
+                <PhotosWidget posts={getUserPosts(userId)} />
+              ) : (
+                <Box
+                  sx={{
+                    overflowY: "auto",
+                    maxHeight: "calc(100vh - 4rem)", // Adjust the max height as needed
+                    scrollbarWidth: "none", // Hide scrollbar for Firefox
+                    "&::-webkit-scrollbar": {
+                    display: "none", // Hide scrollbar for Webkit-based browsers
+                    },
+                  }}
+                >
+                  <PostsWidget userId={userId} isProfile />
+                </Box>
+              )
             )
+             
           }
                            
         </Box>
