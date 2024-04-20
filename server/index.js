@@ -23,7 +23,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: "https://blendbuddies-socialmedia-app.vercel.app",
+    origin: ["http://localhost:5173", "https://blendbuddies-socialmedia-app.vercel.app"],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     preflightContinue: false,
     credentials: true
