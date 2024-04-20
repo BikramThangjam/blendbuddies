@@ -22,17 +22,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 
-app.use(cors({
-    origin: ["http://localhost:5173", "https://blendbuddies-socialmedia-app.vercel.app"],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    preflightContinue: false,
-    credentials: true
-  }));
-
-// Middleware to handle OPTIONS requests
-app.options('*', (req, res) => {
-    res.status(200).end();
-  });
+app.use(cors());
 
 app.use(express.json());
 app.use(helmet());
