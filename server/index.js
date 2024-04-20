@@ -29,8 +29,10 @@ app.use(cors({
     credentials: true
   }));
 
-  // Middleware to handle OPTIONS requests
-app.options('*', cors());
+// Middleware to handle OPTIONS requests
+app.options('*', (req, res) => {
+    res.status(200).end();
+  });
 
 app.use(express.json());
 app.use(helmet());
