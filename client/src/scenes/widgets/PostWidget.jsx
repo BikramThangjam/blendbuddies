@@ -8,7 +8,6 @@ import {
 
 import {
   Box,
-  Divider,
   Typography,
   IconButton,
   useTheme,
@@ -24,7 +23,6 @@ import React from "react";
 import { API_URL } from "../../config";
 import moment from "moment";
 import CommentWidget from "./CommentWidget";
-import { postComments } from "../../data";
 import UserImage from "../../components/UserImage";
 
 const PostWidget = ({
@@ -41,10 +39,8 @@ const PostWidget = ({
 }) => {
   const [showAll, setShowAll] = useState(0);
   const [showComments, setShowComments] = useState(0);
-  const [showReply, setShowReply] = useState(0);
   const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([]);
-  const [replyComments, setReplyComments] = useState(0);
   const { firstName, lastName } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -91,6 +87,7 @@ const PostWidget = ({
   }
 
   const getComments = async (postId) => {
+    setLoading(true)
     const response = await fetch(`${API_URL}/posts/${postId}/comments`, {
       method: "GET",
       headers: {
@@ -101,7 +98,7 @@ const PostWidget = ({
     if (response.ok) {
       const data = await response.json();
       setComments(data);
-      setReplyComments(0);
+      setLoading(false);
     }
   };
 
