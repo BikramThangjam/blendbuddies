@@ -6,7 +6,7 @@
     "routes": [
         { 
             "src": "/(.*)", 
-            "dest": "/",
+            "dest": "./src/main.jsx",
             "headers": {
                 "Access-Control-Allow-Origin": "*"
             }
