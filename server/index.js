@@ -26,7 +26,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-    origin: ['https://blendbuddies-client.vercel.app', 'http://localhost:5173', 'https://blendbuddies.netlify.app/'],
+    origin: ['https://blendbuddies-client.vercel.app', 'http://localhost:5173', 'https://blendbuddies.netlify.app'],
     credentials: true
 };
 
