@@ -22,8 +22,8 @@ function App() {
           <CssBaseline />
           <Routes>
               <Route path="/" element={isAuth ? <Navigate to="/home" /> : <LoginPage />} />
-              <Route path="/home" element={isAuth ? <HomePage /> : <Navigate to="/" />} />
-              <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} />
+              <Route path="/home" element={isAuth ? <HomePage /> : <LoginPage />} />
+              <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <LoginPage />} />
               <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>     
