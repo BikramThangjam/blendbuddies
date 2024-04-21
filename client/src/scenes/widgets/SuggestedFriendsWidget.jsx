@@ -49,7 +49,7 @@ const SuggestedFriendsWidget = () => {
       >
         Friend Suggestions
       </Typography>
-      <Typography my="1.5rem">People you may know</Typography>
+      <Typography my="1.5rem" color="primary" variant="h5">People you may know</Typography>
       {suggestedFriends?.length > 0 ? (
         <Box display="flex" flexDirection="column" gap="1.5rem">
           {suggestedFriends.map((friend) => (
