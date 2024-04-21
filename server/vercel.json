@@ -9,13 +9,6 @@
         "destination": "/client/dist/index.html"
       }
     ],   
-    "routes": [
-        { 
-            "src": "/(.*)", 
-            "dest": "/"
-        }
-      ],
-    
       "headers": [
         {
           "source": "/(.*)",
