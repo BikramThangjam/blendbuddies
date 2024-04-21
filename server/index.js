@@ -51,8 +51,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage})
 
-// app.get("/", (req, res) => res.send("Express on Vercel"));
-
 // Routes with uploaded files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
@@ -61,6 +59,11 @@ app.patch("/user/profile/:id", verifyToken, upload.single("picture"), updateProf
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+
+// Serve index.html for all routes
+app.get("*", (req, res) => {
+    res.redirect('https://github.com/BikramThangjam/blendbuddies/blob/main/client/index.html');
+  });
 
 // Mongoose setup
 const PORT = process.env.PORT || 5001;
