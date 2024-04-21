@@ -6,10 +6,22 @@
     "routes": [
         { 
             "src": "/(.*)", 
+            "headers": [
+              {
+                "key": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ],
             "dest": "/"
         },
         { 
-            "src": "/(.*)/(.*)", 
+            "src": "/(.*)/(.*)",
+            "headers": [
+              {
+                "key": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ], 
             "dest": "/"
         }
       ]
