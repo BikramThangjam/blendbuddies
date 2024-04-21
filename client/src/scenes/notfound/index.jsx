@@ -14,7 +14,7 @@ export default function NotFound() {
     >
       <Container maxWidth="md">
         <Grid container spacing={2}>
-          <Grid xs={6}>
+          <Grid item  xs={12} md={6}>
             <Typography variant="h1">
               404
             </Typography>
@@ -23,7 +23,7 @@ export default function NotFound() {
             </Typography>
             <Button variant="contained" sx={{marginTop: "1.1rem"}} href='/home'>Back Home</Button>
           </Grid>
-          <Grid xs={6}>
+          <Grid item  xs={12}  md={6}>
             <img
               src="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
               alt=""

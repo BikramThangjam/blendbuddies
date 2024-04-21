@@ -19,6 +19,9 @@ import { updateProfile } from "./controllers/users.js";
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+
 dotenv.config();
 const app = express();
 
@@ -60,10 +63,6 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
-// Serve index.html for all routes
-app.get("*", (req, res) => {
-    res.redirect('https://github.com/BikramThangjam/blendbuddies/blob/main/client/index.html');
-  });
 
 // Mongoose setup
 const PORT = process.env.PORT || 5001;
