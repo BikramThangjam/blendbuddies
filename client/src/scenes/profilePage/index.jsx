@@ -49,7 +49,7 @@ function ProfilePage() {
 
   useEffect(() => {
     getUser();
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [userId]); //eslint-disable-line react-hooks/exhaustive-deps
 
   if (!user) return null;
 
