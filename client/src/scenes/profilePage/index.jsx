@@ -12,7 +12,6 @@ import { API_URL } from "../../config";
 import PhotosWidget from "../../scenes/widgets/PhotosWidget";
 import EditProfilePage from "../../scenes/editProfilePage";
 import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget";
-import { setFriends } from "../../reducers";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -22,7 +21,6 @@ function ProfilePage() {
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
   const posts = useSelector(state => state.posts);
-  const dispatch = useDispatch();
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
@@ -39,7 +37,6 @@ function ProfilePage() {
       const data = await response.json();
       setUser(data);
       setLoading(false)
-      dispatch(setFriends({friends: data.friends}))
     }
     
   };

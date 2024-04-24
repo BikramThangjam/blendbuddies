@@ -4,7 +4,7 @@ import {
 } from "@mui/icons-material";
 import {Box, Icon, IconButton, Typography, useTheme} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation, Link  } from "react-router-dom";
+import { useLocation, Link  } from "react-router-dom";
 import { setFriends } from "../reducers";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
@@ -12,10 +12,9 @@ import UserImage from "./UserImage";
 import React from 'react'
 import { API_URL } from "../config";
 
-function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions}) {
+function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions, getFriends}) {
     
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const location = useLocation();
     const isProfileRoute = location.pathname.includes("/profile/");
 
@@ -43,7 +42,8 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
             })
         
             const data = await response.json();
-            dispatch(setFriends({friends: data}));
+            // dispatch(setFriends({friends: data}));
+            getFriends();
             getFriendSuggestions();
     };
 
@@ -55,10 +55,6 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
         >
             <UserImage image={userPicturePath} size="55px" />
             <Link
-                // onClick={()=>{
-                //     navigate(`/profile/${friendId}`);
-                //     navigate(0);
-                // }}
                 to={`/profile/${friendId}`}
                 style={{textDecoration: "none"}}
             >

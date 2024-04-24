@@ -17,6 +17,7 @@ import { openModal } from "../../reducers";
 const UserWidget = ({ userId, picturePath}) => {
   const [user, setUser] = useState(null);
   const loggedInUser = useSelector(state => state.user._id);
+  const [friendCount, setFriendCount] = useState(0);
 
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -24,7 +25,6 @@ const UserWidget = ({ userId, picturePath}) => {
 
 
   const token = useSelector(state => state.token);
-  const friends = useSelector(state => state.user.friends);
   const dispatch = useDispatch()
 
   const dark = palette.neutral.dark;
@@ -39,8 +39,12 @@ const UserWidget = ({ userId, picturePath}) => {
       },
     });
 
-    const data = await response.json();
-    setUser(data);
+    if(response.ok){
+      const data = await response.json();
+      setUser(data);
+      setFriendCount(data.friends?.length)
+    }
+    
   };
 
   useEffect(() => {
@@ -91,7 +95,7 @@ const UserWidget = ({ userId, picturePath}) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{friends?.length} friends</Typography>
+            <Typography color={medium}>{friendCount} friends</Typography>
           </Box>
         </FlexBetween>
         {

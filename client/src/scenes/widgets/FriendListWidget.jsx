@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends, setSuggestedFriends} from "../../reducers";
 import { API_URL } from "../../config";
@@ -11,7 +11,8 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector(state => state.user._id);
-  const friends = useSelector((state) => state.user.friends);
+  // const friends = useSelector((state) => state.user.friends);
+  const [friends, setFriends] = useState([]);
 
   const getFriends = async () => {
     const response = await fetch(`${API_URL}/users/${userId}/friends`, {
@@ -20,7 +21,8 @@ const FriendListWidget = ({ userId }) => {
     });
 
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    // dispatch(setFriends({ friends: data }));
+    setFriends(data);
   };
 
   const getFriendSuggestions = async () => {
@@ -58,7 +60,7 @@ const FriendListWidget = ({ userId }) => {
       >
         Friend List
       </Typography>
-      {friends.length > 0 ? (
+      {friends?.length > 0 ? (
         <Box display="flex" flexDirection="column" gap="1.5rem">
           {friends.map((friend) => (
             <Friend
@@ -68,6 +70,7 @@ const FriendListWidget = ({ userId }) => {
               subtitle={friend.occupation}
               userPicturePath={friend.picturePath}
               getFriendSuggestions={getFriendSuggestions}
+              getFriends={getFriends}
             />
           ))}
         </Box>
