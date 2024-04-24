@@ -11,7 +11,7 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector(state => state.user._id);
-  const [friends, setFriends] = useState(userId === loggedInUserId ? useSelector(state.user.friends) : []);
+  const [friends, setFriends] = useState(userId === loggedInUserId ? useSelector(state => state.user.friends) : []);
 
   const getFriends = async () => {
     const response = await fetch(`${API_URL}/users/${userId}/friends`, {

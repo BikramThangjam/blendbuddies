@@ -17,7 +17,7 @@ import { openModal } from "../../reducers";
 const UserWidget = ({ userId, picturePath}) => {
   const [user, setUser] = useState(null);
   const loggedInUser = useSelector(state => state.user._id);
-  const [friendCount, setFriendCount] = useState(userId === loggedInUser ? useSelector(state.user.friends).length : 0);
+  const [friendCount, setFriendCount] = useState(userId === loggedInUser ? useSelector(state => state.user.friends).length : 0);
 
   const { palette } = useTheme();
   const navigate = useNavigate();
