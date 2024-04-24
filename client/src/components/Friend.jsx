@@ -42,7 +42,7 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
             })
         
             const data = await response.json();
-            // dispatch(setFriends({friends: data}));
+            dispatch(setFriends({friends: data}));
             getFriends();
             getFriendSuggestions();
     };

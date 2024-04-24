@@ -3,7 +3,7 @@ import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends, setSuggestedFriends} from "../../reducers";
+import { setSuggestedFriends} from "../../reducers";
 import { API_URL } from "../../config";
 
 const FriendListWidget = ({ userId }) => {
@@ -11,8 +11,7 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector(state => state.user._id);
-  // const friends = useSelector((state) => state.user.friends);
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState(userId === loggedInUserId ? useSelector(state.user.friends) : []);
 
   const getFriends = async () => {
     const response = await fetch(`${API_URL}/users/${userId}/friends`, {
@@ -21,7 +20,6 @@ const FriendListWidget = ({ userId }) => {
     });
 
     const data = await response.json();
-    // dispatch(setFriends({ friends: data }));
     setFriends(data);
   };
 
