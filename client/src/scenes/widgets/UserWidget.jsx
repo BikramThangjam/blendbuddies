@@ -16,8 +16,8 @@ import { openModal } from "../../reducers";
 
 const UserWidget = ({ userId, picturePath}) => {
   const [user, setUser] = useState(null);
-  const loggedInUser = useSelector(state => state.user._id);
-  const [friendCount, setFriendCount] = useState(userId === loggedInUser ? useSelector(state => state.user.friends).length : 0);
+  const loggedInUserId = useSelector(state => state.user._id);
+  const loggedInFriends = useSelector(state => state.user.friends);
 
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -41,18 +41,15 @@ const UserWidget = ({ userId, picturePath}) => {
 
     if(response.ok){
       const data = await response.json();
-      setUser(data);
-
-      if(userId !== loggedInUser){
-        setFriendCount(data.friends?.length)
-      }
-      
+      setUser(data);    
     }
     
   };
 
   useEffect(() => {
+
     getUser();
+
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!user) {
@@ -66,6 +63,7 @@ const UserWidget = ({ userId, picturePath}) => {
     occupation,
     viewedProfile,
     impressions,
+    friends,
   } = user;
 
   return (
@@ -99,11 +97,19 @@ const UserWidget = ({ userId, picturePath}) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{friendCount} friends</Typography>
+
+            {
+              userId === loggedInUserId ? (
+                <Typography color={medium}>{loggedInFriends.length} friends</Typography>
+              ) : (
+                <Typography color={medium}>{friends.length} friends</Typography>
+              )
+            }
+            
           </Box>
         </FlexBetween>
         {
-          currentRoute.pathname !== "/home" && user._id == loggedInUser && (
+          currentRoute.pathname !== "/home" && user._id == loggedInUserId && (
             <ManageAccountsOutlined 
               onClick={() => dispatch(openModal())} 
               sx={{ "&:hover": { cursor: "pointer" } }}
@@ -153,8 +159,8 @@ const UserWidget = ({ userId, picturePath}) => {
           Social Profiles
         </Typography>
 
-        <EditableText text={user?.socialProfileUrl.linkedin} socialPlatform="linkedin" userId={userId} loggedInUserId = {loggedInUser} getUser={getUser}/>
-        <EditableText text={user?.socialProfileUrl.twitter} socialPlatform="twitter" userId={userId} loggedInUserId = {loggedInUser} getUser={getUser} />     
+        <EditableText text={user?.socialProfileUrl.linkedin} socialPlatform="linkedin" userId={userId} loggedInUserId = {loggedInUserId} getUser={getUser}/>
+        <EditableText text={user?.socialProfileUrl.twitter} socialPlatform="twitter" userId={userId} loggedInUserId = {loggedInUserId} getUser={getUser} />     
 
       </Box>
     </WidgetWrapper>

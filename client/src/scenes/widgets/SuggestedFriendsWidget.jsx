@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../../config";
 import { useSelector, useDispatch } from "react-redux";
 import SuggestedFriend from "../../components/SuggestedFriend";
-import { setSuggestedFriends } from "../../reducers";
+import { setSuggestedFriends, setFriends} from "../../reducers";
 
 const SuggestedFriendsWidget = () => {
   const token = useSelector(state => state.token);
@@ -60,6 +60,7 @@ const SuggestedFriendsWidget = () => {
               subtitle={friend.occupation}
               userPicturePath={friend.picturePath}
               getFriendSuggestions={getFriendSuggestions}
+             
             />
           ))}
         </Box>

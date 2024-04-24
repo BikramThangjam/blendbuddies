@@ -12,7 +12,8 @@ import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget"
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const user = useSelector(state => state.user);
-  const { _id, picturePath } = useSelector((state) => state.user);
+  const { _id, picturePath } = user;
+  
   return (
     <Box>
       <Navbar />

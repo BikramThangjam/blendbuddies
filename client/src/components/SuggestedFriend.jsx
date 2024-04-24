@@ -34,7 +34,7 @@ function SuggestedFriend({ friendId, name, subtitle, userPicturePath, getFriendS
 
       if (response.ok) {
         const data = await response.json();
-        dispatch(setFriends({ friends: data }));
+        dispatch(setFriends({friends: data }))
         getFriendSuggestions(); // Refresh friend suggestions list after adding friend
       } else {
         // Handle error

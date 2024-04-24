@@ -19,7 +19,7 @@ import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost, setPosts } from "../../reducers";
+import { setPost, setPosts, setSuggestedFriends } from "../../reducers";
 import React from "react";
 import { API_URL } from "../../config";
 import moment from "moment";
@@ -103,6 +103,21 @@ const PostWidget = ({
     }
   };
 
+  const getFriendSuggestions = async () => {
+    const response = await fetch(
+      `${API_URL}/users/${loggedInUserId}/suggestions`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(setSuggestedFriends({ suggestedFriends: data }));
+    }
+  };
+
   useEffect(() => {
     getComments(postId);
   }, []);
@@ -114,6 +129,7 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
+        getFriendSuggestions={getFriendSuggestions}
       />
       <Typography color={medium} fontSize="0.75rem" mt="1.1rem">
         {postTime}

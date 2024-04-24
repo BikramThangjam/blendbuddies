@@ -12,7 +12,7 @@ import UserImage from "./UserImage";
 import React from 'react'
 import { API_URL } from "../config";
 
-function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions, getFriends}) {
+function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions}) {
     
     const dispatch = useDispatch();
     const location = useLocation();
@@ -41,11 +41,14 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
                 }
             })
         
-            const data = await response.json();
-            dispatch(setFriends({friends: data}));
-            getFriends();
-            getFriendSuggestions();
-    };
+            if(response.ok){
+                const data = await response.json(); 
+                dispatch(setFriends({friends: data}));          
+                getFriendSuggestions();
+                
+            }
+     };
+            
 
 
   return (
