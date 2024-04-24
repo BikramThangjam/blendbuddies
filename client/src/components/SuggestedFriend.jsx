@@ -52,7 +52,7 @@ function SuggestedFriend({ friendId, name, subtitle, userPicturePath, getFriendS
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
-            navigate(0);
+            
           }}
         >
           <Typography
