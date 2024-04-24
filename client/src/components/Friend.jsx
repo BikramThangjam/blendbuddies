@@ -57,7 +57,7 @@ function Friend({
     if (response.ok) {
        
       const data = await response.json();
-      console.log("patchdata:: ",data);
+      
       dispatch(setFriends({ friends: data.formattedFriends }));
       getFriendSuggestions();
       dispatch(setNotifMsg({msg: data.msg}));
