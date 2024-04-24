@@ -58,7 +58,15 @@ const EditableText = ({ text, socialPlatform, userId, loggedInUserId, getUser })
 
   return (
    
-      <Box gap="1rem" display="flex" alignItems="center" justifyContent="flex-start">
+      <Box 
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          gap: "1rem"
+        }}
+      
+      >
         <img src={`../assets/${socialPlatform}.png`} alt="twitter" />
         <Box width="100%">
           <Typography color={main} fontWeight="500">
@@ -91,7 +99,7 @@ const EditableText = ({ text, socialPlatform, userId, loggedInUserId, getUser })
                 />
               ) : (
                 <EditOutlined
-                  alignItems="flex-end"
+                  sx={{alignItems: "flex-end"}}
                   onClick={handleEditStart}
                 />
               ))}

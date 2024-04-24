@@ -12,6 +12,7 @@ import { API_URL } from "../../config";
 import PhotosWidget from "../../scenes/widgets/PhotosWidget";
 import EditProfilePage from "../../scenes/editProfilePage";
 import SuggestedFriendsWidget from "../../scenes/widgets/SuggestedFriendsWidget";
+import NotificationBar from "../../components/NotificationBar";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -55,6 +56,7 @@ function ProfilePage() {
 
   return (
     <Box>
+      <NotificationBar />
       <Navbar />
       <EditProfilePage />
       <Box

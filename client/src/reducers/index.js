@@ -6,6 +6,8 @@ const initialState = {
     token: null,
     posts: [],
     isOpen: false,
+    notification: false,
+    notifMsg: "",
     friendsOfFriends:[],
     suggestedFriends: [],
 }
@@ -77,9 +79,31 @@ export const authSlice = createSlice({
 
         setUserProfile: (state, action) => {
             state.user.socialProfileUrl = action.payload.socialProfileUrl
-        }
+        },
+
+        showNotification: state => {state.notification = true},
+        closeNotification: state => {state.notification = false},
+        setNotifMsg: (state, action) => {
+            state.notifMsg = action.payload.msg;
+        },
     }
 })
 
-export const {setMode, openModal, closeModal, setLogin, setLogout, setFriends,setFriendsOfFriends, setPost, setPosts, setUserProfile, setSuggestedFriends} = authSlice.actions;
+export const {
+    setMode, 
+    openModal, 
+    closeModal, 
+    setLogin, 
+    setLogout, 
+    setFriends,
+    setFriendsOfFriends, 
+    setPost, 
+    setPosts, 
+    setUserProfile, 
+    setSuggestedFriends,
+    showNotification,
+    closeNotification,
+    setNotifMsg
+} = authSlice.actions;
+
 export default authSlice.reducer;

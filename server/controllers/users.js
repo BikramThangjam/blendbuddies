@@ -64,37 +64,41 @@ export const getFriendSuggestions = async (req, res) => {
 
 export const addRemoveFriend = async (req, res) => {
     try {
-        const {id, friendId} = req.params;
+        const { id, friendId } = req.params;
         const user = await User.findById(id);
         const friend = await User.findById(friendId);
 
-        if(user.friends.includes(friendId)){
-            // remove from friend list
-            user.friends = user.friends.filter(id => id !== friendId);
-            friend.friends = friend.friends.filter(id => id !== id)
-        }else{
+        let msg;
+        if (user.friends.includes(friendId)) {
+            // Remove from friend list
+            user.friends = user.friends.filter(userId => userId !== friendId);
+            friend.friends = friend.friends.filter(userId => userId !== id);
+            msg = "removed";
+        } else {
+            // Add to friend list
             user.friends.push(friendId);
             friend.friends.push(id);
+            msg = "added";
         }
-        
+
+        // Save changes
         await user.save();
         await friend.save();
-
         
         const friends = await Promise.all(
             user.friends.map(id => User.findById(id))
         );
-        
+
         const formattedFriends = friends.map(({_id, firstName, lastName, occupation, location, picturePath}) => {
             return {_id, firstName, lastName, occupation, location, picturePath}
         })
 
-        res.status(200).json(formattedFriends);
+        res.status(200).json({ formattedFriends, msg });
 
     } catch (err) {
-        res.status(404).json({message: err.message});
+        res.status(404).json({ message: err.message });
     }
-}
+};
 
 export const updateSocial = async (req, res) => {
     try {

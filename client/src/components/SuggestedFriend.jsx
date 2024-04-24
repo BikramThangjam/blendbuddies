@@ -2,7 +2,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box,IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriends } from "../reducers";
+import { setFriends, setNotifMsg, showNotification } from "../reducers";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import { API_URL } from "../config";
@@ -34,8 +34,10 @@ function SuggestedFriend({ friendId, name, subtitle, userPicturePath, getFriendS
 
       if (response.ok) {
         const data = await response.json();
-        dispatch(setFriends({friends: data }))
+        dispatch(setFriends({friends: data.formattedFriends }))
         getFriendSuggestions(); // Refresh friend suggestions list after adding friend
+        dispatch(setNotifMsg({msg: data.msg}));
+        dispatch(showNotification());
       } else {
         // Handle error
         console.error("Failed to add friend:", response.statusText);
