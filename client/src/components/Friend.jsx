@@ -4,7 +4,7 @@ import {
 } from "@mui/icons-material";
 import {Box, Icon, IconButton, Typography, useTheme} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation  } from "react-router-dom";
+import { useNavigate, useLocation, Link  } from "react-router-dom";
 import { setFriends } from "../reducers";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
@@ -54,11 +54,13 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
             gap="1rem"
         >
             <UserImage image={userPicturePath} size="55px" />
-            <Box
-                onClick={()=>{
-                    navigate(`/profile/${friendId}`);
-                    navigate(0);
-                }}
+            <Link
+                // onClick={()=>{
+                //     navigate(`/profile/${friendId}`);
+                //     navigate(0);
+                // }}
+                to={`/profile/${friendId}`}
+                style={{textDecoration: "none"}}
             >
                 <Typography
                     color={main}
@@ -79,7 +81,7 @@ function Friend({friendId, name, subtitle, userPicturePath, getFriendSuggestions
                 >
                     {subtitle}
                 </Typography>
-            </Box>
+            </Link>
         </FlexBetween>
         {
             _id !== friendId && !isProfileRoute && (
