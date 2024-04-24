@@ -39,7 +39,7 @@ function ProfilePage() {
       const data = await response.json();
       setUser(data);
       setLoading(false)
-      dispatch(setFriends(data.friends))
+      dispatch(setFriends({friends: data.friends}))
     }
     
   };
