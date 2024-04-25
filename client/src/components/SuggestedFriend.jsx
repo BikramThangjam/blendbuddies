@@ -49,7 +49,7 @@ function SuggestedFriend({ friendId, name, subtitle, userPicturePath, getFriendS
 
   return (
     <FlexBetween>
-      <FlexBetween gap="1rem">
+      <FlexBetween gap="1rem" onClick={() => navigate(`/profile/${friendId}`)} style={{cursor: "pointer"}} >
         <UserImage image={userPicturePath} size="55px" />
         <Box
           onClick={() => {

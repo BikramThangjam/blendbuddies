@@ -1,3 +1,5 @@
+
+import React from "react";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import {
   Box,
@@ -8,12 +10,10 @@ import {
   
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
-import { setFriends, showNotification, closeNotification, setNotifMsg } from "../reducers";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { setFriends, showNotification, setNotifMsg } from "../reducers";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
-
-import React, { useState } from "react";
 import { API_URL } from "../config";
 
 function Friend({
@@ -24,6 +24,7 @@ function Friend({
   getFriendSuggestions,
   profileId
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const location = useLocation();
   // const isProfileRoute = location.pathname.includes("/profile/");
@@ -68,7 +69,7 @@ function Friend({
 
   return (
     <FlexBetween>
-      <FlexBetween gap="1rem">
+      <FlexBetween gap="1rem" onClick={() => navigate(`/profile/${friendId}`)} style={{cursor: "pointer"}}>
         <UserImage image={userPicturePath} size="55px" />
         <Link to={`/profile/${friendId}`} style={{ textDecoration: "none" }}>
           <Typography
