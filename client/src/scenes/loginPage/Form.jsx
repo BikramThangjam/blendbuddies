@@ -26,7 +26,7 @@ const registerSchema = Yup.object().shape({
   password: Yup.string().required("required"),
   location: Yup.string().required("required"),
   occupation: Yup.string().required("required"),
-  picture: Yup.string().required("required"),
+  picture: Yup.string(),
 });
 
 const loginSchema = Yup.object().shape({
@@ -65,7 +65,7 @@ const Form = () => {
     for (let value in values){
         formData.append(value, values[value])
     }
-    formData.append('picturePath', values.picture.name);
+    formData.append('picturePath', values?.picture?.name || "");
 
     const savedUserResponse = await fetch(
         `${API_URL}/auth/register`,

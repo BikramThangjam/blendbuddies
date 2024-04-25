@@ -22,11 +22,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal, setLogin } from "../../reducers";
 
 const editProfileSchema = Yup.object().shape({
-  firstName: Yup.string().required("required"),
-  lastName: Yup.string().required("required"),
-  location: Yup.string().required("required"),
-  occupation: Yup.string().required("required"),
-  picture: Yup.string().required("required"),
+  firstName: Yup.string(),
+  lastName: Yup.string(),
+  location: Yup.string(),
+  occupation: Yup.string(),
+  picture: Yup.string(),
 });
 
 const initialValues = {

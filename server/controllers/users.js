@@ -144,7 +144,7 @@ export const updateSocial = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { firstName, lastName, location, occupation, picturePath } = req.body;
+    
     const {id} = req.params;
     const user = await User.findById(id);
 
@@ -152,12 +152,20 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ msg: 'Invalid user or user cannot be found' });
     }
 
-    // Update user profile fields
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.location = location;
-    user.occupation = occupation;
-    user.picturePath = picturePath;
+    // Extract fields from request body
+    const { firstName, lastName, location, occupation, picturePath } = req.body;
+
+    console.log({ firstName, lastName, location, occupation, picturePath });
+
+    // Define fields to update
+    const fieldsToUpdate = { firstName, lastName, location, occupation, picturePath };
+
+    // Update user profile fields if provided
+    Object.keys(fieldsToUpdate).forEach(field => {
+      if (fieldsToUpdate[field] !== undefined && fieldsToUpdate[field] !== '') {
+        user[field] = fieldsToUpdate[field];
+      }
+    });
 
     // Save the updated user
     await user.save();
