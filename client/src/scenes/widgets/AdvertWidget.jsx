@@ -4,6 +4,7 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { API_URL } from "../../config";
 
 const AdvertWidget = () => {
+    const adsImg = "https://res.cloudinary.com/doqjl4k7t/image/upload/v1714896604/blendbuddies/ads1.jpg";
     const {palette} = useTheme()
     const dark = palette.neutral.dark;
     const main = palette.neutral.main;
@@ -28,7 +29,7 @@ const AdvertWidget = () => {
     <img 
         width="100%"  
         alt= "Ads"   
-        src={`${API_URL}/assets/ads/ads1.jpg`}
+        src={adsImg}
         style={{borderRadius: "0.75rem", margin: "0.75rem 0", maxHeight:"300px", objectFit: "cover"}}     
     />
     <FlexBetween>

@@ -26,7 +26,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-    origin: ['https://blendbuddies-client.vercel.app', 'http://localhost:5173', 'https://blendbuddies.netlify.app'],
+    origin: ['http://localhost:5173', 'https://blendbuddies.netlify.app'],
     credentials: true
 };
 
@@ -45,7 +45,7 @@ app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 // File storage
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, "public/assets");
+        cb(null, "public/temp");
     },
     filename: function(req, file, cb){
         cb(null, file.originalname)

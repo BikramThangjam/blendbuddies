@@ -173,7 +173,7 @@ const PostWidget = ({
             cursor: "pointer",
           }}
           onClick={handleOpen}
-          src={`${API_URL}/assets/${picturePath}`}
+          src={picturePath}
         />
       )}
 
@@ -203,7 +203,7 @@ const PostWidget = ({
                 maxHeight: "100%",
                 objectFit: "scale-down",
               }} // Adjust image styles
-              src={`${API_URL}/assets/${picturePath}`}
+              src={picturePath}
               alt="Preview"
             />
           )}

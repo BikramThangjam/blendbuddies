@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -153,12 +154,22 @@ export const updateProfile = async (req, res) => {
     }
 
     // Extract fields from request body
-    const { firstName, lastName, location, occupation, picturePath } = req.body;
+    const { firstName, lastName, location, occupation } = req.body;
+    const pictureObj = req.file;
+    let picture;
 
-    console.log({ firstName, lastName, location, occupation, picturePath });
+    if(pictureObj){
+        picture = await uploadOnCloudinary(pictureObj.path)
+    }
 
     // Define fields to update
-    const fieldsToUpdate = { firstName, lastName, location, occupation, picturePath };
+    const fieldsToUpdate = { 
+        firstName, 
+        lastName, 
+        location, 
+        occupation, 
+        picturePath: picture?.url || '' 
+    };
 
     // Update user profile fields if provided
     Object.keys(fieldsToUpdate).forEach(field => {

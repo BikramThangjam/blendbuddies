@@ -56,7 +56,7 @@ const EditForm = () => {
     for (let value in values) {
       formData.append(value, values[value]);
     }
-    formData.append("picturePath", values.picture.name);
+    // formData.append("picturePath", values.picture.name);
     
     const response = await fetch(`${API_URL}/user/profile/${userId}`,{
       method: "PATCH",
@@ -86,7 +86,7 @@ const EditForm = () => {
     setTimeout(()=>{
       setIsSuccess(false);
       dispatch(closeModal());
-    }, 3000)
+    }, 2500)
 
   };
 

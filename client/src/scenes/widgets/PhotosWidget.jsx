@@ -36,7 +36,7 @@ const PhotosWidget = ({ posts }) => {
                   <CardMedia
                     component="img"
                     height="200"
-                    image={`${API_URL}/assets/${post.picturePath}`} // Assuming this is the field containing the picture path
+                    image={post.picturePath} // Assuming this is the field containing the picture path
                     alt={post.picturePath}
                   />
                 </Card>
@@ -71,7 +71,7 @@ const PhotosWidget = ({ posts }) => {
                 maxHeight: "100%",
                 objectFit: "scale-down",
               }} // Adjust image styles
-              src={`${API_URL}/assets/${post.picturePath}`}
+              src={post.picturePath}
               alt="Preview"
             />
           </Box>
