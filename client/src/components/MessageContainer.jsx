@@ -13,10 +13,10 @@ import { API_URL } from "../config";
 import { useSelector, useDispatch } from "react-redux";
 import { useSocket } from "../context/SocketContext";
 import { setConversations } from "../reducers";
+import messageSound from "../assets/sounds/message.mp3";
 
 const MessageContainer = () => {
   const theme = useTheme();
-  const dark = theme.palette.neutral.dark;
   const alt = theme.palette.background.alt;
   const token = useSelector((state) => state.token);
   const selectedConversation = useSelector(
@@ -71,6 +71,12 @@ const MessageContainer = () => {
         if (selectedConversation._id === message.conversationId) {
           setMessages((prevMessages) => [...prevMessages, message]);
         }
+
+        if (message.sender !== loggedInUserId && !document.hasFocus()) {
+          const sound = new Audio(messageSound);
+          sound.play(); 
+        }
+        
 
         const updatedConversations = conversations.map((conversation) => {
           if (conversation._id === message.conversationId) {

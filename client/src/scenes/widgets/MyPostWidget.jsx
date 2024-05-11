@@ -18,6 +18,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
 import UserImage from "../../components/UserImage";
@@ -27,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../reducers";
 import { API_URL } from "../../config";
 
-const MyPostWidget = ({ picturePath}) => {
+const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -37,32 +38,43 @@ const MyPostWidget = ({ picturePath}) => {
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const medium = palette.neutral.medium;
-  const main = palette.primary.main
+  const main = palette.primary.main;
+
+  const [isPosting, setIsPosting] = useState(false);
 
   const handlePost = async () => {
-    const formData = new FormData();
-    formData.append("userId", _id);
-    formData.append("description", post);
-    if (image) {
-      formData.append("picture", image);
-      // formData.append("picturePath", image.name);
+    try {
+      setIsPosting(true);
+
+      const formData = new FormData();
+      formData.append("userId", _id);
+      formData.append("description", post);
+      if (image) {
+        formData.append("picture", image);
+      }
+
+      const response = await fetch(`${API_URL}/posts`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (response.status !== 201) throw new Error("Failed to create new post");
+
+      const posts = await response.json();
+      dispatch(setPosts({ posts }));
+      setImage(null);
+      setPost("");
+    } catch (error) {
+      console.log("Error :: ", error);
+    } finally {
+      setIsPosting(false);
     }
-
-    const response = await fetch(`${API_URL}/posts`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
-    setImage(null);
-    setPost("");
   };
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); 
+      event.preventDefault();
       handlePost();
     }
   };
@@ -72,7 +84,7 @@ const MyPostWidget = ({ picturePath}) => {
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath} />
         <InputBase
-          placeholder= "What's on your mind..."
+          placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{
@@ -83,22 +95,29 @@ const MyPostWidget = ({ picturePath}) => {
           }}
           onKeyPress={handleKeyPress}
         />
-        {
-          isNonMobileScreens && (
+        {isNonMobileScreens &&
+          (!isPosting ? (
             <Button
               disabled={!post}
               onClick={handlePost}
               sx={{
                 color: "white",
-                backgroundColor: post ? palette.primary.main : palette.neutral.light,
+                backgroundColor: post
+                  ? palette.primary.main
+                  : palette.neutral.light,
                 borderRadius: "3rem",
               }}
             >
               POST
             </Button>
-          )
-        }
-        
+          ) : (
+            <LoadingButton
+              loading
+              variant="outlined"
+            >
+              POST
+            </LoadingButton>
+          ))}
       </FlexBetween>
       {isImage && (
         <Box
@@ -171,21 +190,33 @@ const MyPostWidget = ({ picturePath}) => {
           <>
             <FlexBetween gap="0.25rem">
               <GifBoxOutlined />
-              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Clip</Typography>
+              <Typography
+                sx={{ "&:hover": { cursor: "pointer", color: main } }}
+              >
+                Clip
+              </Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined  />
-              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Attachment</Typography>
+              <AttachFileOutlined />
+              <Typography
+                sx={{ "&:hover": { cursor: "pointer", color: main } }}
+              >
+                Attachment
+              </Typography>
             </FlexBetween>
             <FlexBetween gap="0.25rem">
-              <MicOutlined  />
-              <Typography  sx={{"&:hover": {cursor: "pointer",color: main}}}>Audio</Typography>
+              <MicOutlined />
+              <Typography
+                sx={{ "&:hover": { cursor: "pointer", color: main } }}
+              >
+                Audio
+              </Typography>
             </FlexBetween>
           </>
         ) : (
           <>
             <FlexBetween gap="0.25rem">
-              <MoreHorizOutlined  />
+              <MoreHorizOutlined />
             </FlexBetween>
 
             <Button
@@ -193,7 +224,9 @@ const MyPostWidget = ({ picturePath}) => {
               onClick={handlePost}
               sx={{
                 color: "white",
-                backgroundColor: post ? palette.primary.main : palette.neutral.light,
+                backgroundColor: post
+                  ? palette.primary.main
+                  : palette.neutral.light,
                 borderRadius: "3rem",
               }}
             >

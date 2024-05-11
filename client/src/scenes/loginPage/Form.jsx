@@ -74,10 +74,17 @@ const Form = () => {
             body: formData
         }
     );
+
+    if(savedUserResponse.status !== 201){
+      setErr("Something went wrong")
+      return
+    }
+
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm()
 
     if(savedUser){
+        setErr("")
         setPageType("login")
     }
   }
