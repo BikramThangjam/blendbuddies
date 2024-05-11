@@ -87,7 +87,6 @@ export const likePost = async (req, res) => {
 export const getComments = async (req, res) => {
   try {
     const { postId } = req.params;
-    console.log("postid ", postId);
 
     const postComments = await Comment.find({ postId })
       .populate({

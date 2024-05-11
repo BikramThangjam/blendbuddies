@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         } = req.body
         
         const pictureObj = req.file;
-        console.log("pictureObj :: ", pictureObj);
+        
         const picture = await uploadOnCloudinary(pictureObj.path);
     
 

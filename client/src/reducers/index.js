@@ -10,6 +10,8 @@ const initialState = {
     notifMsg: "",
     friendsOfFriends:[],
     suggestedFriends: [],
+    conversations: [],
+    selectedConversation: ""
 }
 
 export const authSlice = createSlice({
@@ -34,10 +36,7 @@ export const authSlice = createSlice({
             state.token = action.payload.token;
         },
 
-        setLogout: (state) => {
-            state.user = null;
-            state.token = null;
-        },
+        setLogout: (state) => initialState,
 
         setFriends: (state, action) => {
             if(state.user){
@@ -86,6 +85,12 @@ export const authSlice = createSlice({
         setNotifMsg: (state, action) => {
             state.notifMsg = action.payload.msg;
         },
+        setConversations: (state, action) => {
+            state.conversations = action.payload.conversations;
+        },
+         setSelectedConversation: (state, action) => {
+            state.selectedConversation = action.payload.selectedConversation;
+         }
     }
 })
 
@@ -103,7 +108,9 @@ export const {
     setSuggestedFriends,
     showNotification,
     closeNotification,
-    setNotifMsg
+    setNotifMsg,
+    setConversations,
+    setSelectedConversation,
 } = authSlice.actions;
 
 export default authSlice.reducer;

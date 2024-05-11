@@ -9,6 +9,7 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import { themeSettings } from './theme';
 import {Navigate} from "react-router-dom";
 import NotFound from './scenes/notfound';
+import ChatPage from './scenes/chatPage';
 
 function App() {
   const mode = useSelector(state => state.mode);
@@ -24,6 +25,7 @@ function App() {
               <Route path="/" element={isAuth ? <Navigate to="/home" /> : <LoginPage />} />
               <Route path="/home" element={isAuth ? <HomePage /> : <LoginPage />} />
               <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <LoginPage />} />
+              <Route path="/chat" element={<ChatPage />} />
               <Route path="*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>     

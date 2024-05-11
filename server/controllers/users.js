@@ -13,11 +13,44 @@ export const getAllUsers = async (req, res) => {
 export const getUser = async (req, res) => {
     try {
         const {id} = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(id).select("-password -updatedAt");
         res.status(200).json(user);
     } catch (err) {
         res.status(404).json({message: err.message});
     }
+}
+
+export const searchUser = async (req, res) => {
+    const {searchText} = req.query;
+    
+    if(!searchText){
+        return res.status(404).json({error: "No input provided"})  
+    }
+
+    try {
+        let searchPostQuery = {};
+    
+        if (searchText) {
+          searchPostQuery = {
+            $or: [
+              { email: { $regex: searchText, $options: "i" } },
+              { firstName: { $regex: searchText, $options: "i" } },
+              { lastName: { $regex: searchText, $options: "i" } },
+            ],
+          };
+        }
+    
+        const user = await User.findOne(searchPostQuery).select("-password -updatedAt");
+
+        if(!user){
+            return res.status(404).json({error: "User not found"})     
+        }
+
+        res.status(200).json(user);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
 }
 
 

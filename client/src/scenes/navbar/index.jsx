@@ -9,7 +9,7 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
-  AppBar,
+
 } from "@mui/material";
 
 import {
@@ -25,7 +25,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout, setPosts } from "../../reducers";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 import { API_URL } from "../../config";
 
@@ -40,13 +40,17 @@ function Navbar() {
   const mode = useSelector((state) => state.mode);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
+  if(!token){
+    navigate("/");
+  }
+
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
   const alt = theme.palette.background.alt;
 
-  const fullName = `${user.firstName} ${user.lastName}`;
+  const fullName = `${user?.firstName} ${user?.lastName}`;
 
   // Debounce search 
   const handleSearch = (e) => {
@@ -134,15 +138,23 @@ function Navbar() {
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ fontSize: "25px" }} />
+            {theme.palette.mode === "light" ? (
+              <DarkMode sx={{ color: dark, fontSize: "25px" }} />
             ) : (
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
-          <Notifications sx={{ fontSize: "25px" }} />
-          <Help sx={{ fontSize: "25px" }} />
+          <IconButton  onClick={() => navigate("/chat")}>
+            <Message sx={{ fontSize: "25px", cursor:"pointer", color: dark }} />
+          </IconButton>
+          <IconButton>
+            <Notifications sx={{ fontSize: "25px",  cursor:"pointer", color: dark }} />
+          </IconButton>       
+          
+          <IconButton>
+            <Help sx={{ fontSize: "25px",  cursor:"pointer", color: dark }} />
+          </IconButton>  
+          
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -187,6 +199,7 @@ function Navbar() {
           maxWidth="500px"
           minWidth="300px"
           backgroundColor={background}
+          zIndex={3}
         >
           {/* Close icon */}
           <Box display="flex" justifyContent="flex-end" p="1rem">
@@ -212,7 +225,9 @@ function Navbar() {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
+            <IconButton  onClick={() => navigate("/chat")}>
+              <Message sx={{ fontSize: "25px", cursor:"pointer", color: dark }} />
+            </IconButton>        
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
             <FormControl variant="standard" value={fullName}>

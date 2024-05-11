@@ -10,7 +10,7 @@ export const verifyToken = async (req, res, next) => {
         }
 
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Verified- ", verified);
+        // console.log("Verified- ", verified);
         req.user = verified;
 
         next()
